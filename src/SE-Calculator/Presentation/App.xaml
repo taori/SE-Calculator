@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:Presentation"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Presentation.Framework.Converters"
-             xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro">
+             xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             xmlns:sections="clr-namespace:Presentation.ViewModels.Sections">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,15 +18,26 @@
                 <ResourceDictionary Source="Resources/CustomStyles.xaml" />
 				<ResourceDictionary>
 					<local:AppBootstrapper x:Key="Bootstrapper"></local:AppBootstrapper>
-<!--					<Style TargetType="dialogs:BaseMetroDialog">-->
-<!--					</Style>-->
-<!--					<Style x:Key="MetroValidationPopup"  TargetType="{x:Type controls:CustomValidationPopup}">-->
-<!--						<Setter Property="HorizontalAlignment" Value="Right" />-->
-<!--						<Setter Property="HorizontalOffset" Value="0" />-->
-<!--						<Setter Property="VerticalOffset" Value="0" />-->
-<!--						<Setter Property="PopupAnimation" Value="Fade" />-->
-<!--						<Setter Property="Placement" Value="Right" />-->
-<!--					</Style>-->
+
+					<DataTemplate DataType="sections:EnergySource" x:Key="DataTemplateEnergySource">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+
+							</Grid.ColumnDefinitions>
+							<StackPanel Margin="0,0,10,10">
+								<TextBlock Text="Name" />
+								<TextBlock Text="Schiffsgrösse" />
+								<TextBlock Text="Leistungsabgabe (kW)" />
+							</StackPanel>
+							<StackPanel Grid.Column="1" Margin="0,0,0,10">
+								<TextBlock Text="{Binding Path=Name}" />
+								<TextBlock Text="{Binding Path=ShipSize}" />
+								<TextBlock Text="{Binding Path=PowerOutput}" />
+							</StackPanel>
+						</Grid>
+					</DataTemplate>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>

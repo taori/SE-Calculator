@@ -20,7 +20,7 @@
 				<MenuItem Header="Ansicht">
 					<MenuItem Header="Neues Schriff" cal:Message.Attach="OpenTab('NewShip')"></MenuItem>
 					<MenuItem Header="Triebwerksuebersicht" cal:Message.Attach="OpenTab('ThrusterOverview')"></MenuItem>
-					<MenuItem Header="Reaktoruebersicht" cal:Message.Attach="OpenTab('ReactorOverview')"></MenuItem>
+					<MenuItem Header="Energiequellen" cal:Message.Attach="OpenTab('ReactorOverview')"></MenuItem>
 				</MenuItem>
 			</Menu>
 			<TabControl x:Name="Items" controls:TabControlHelper.IsUnderlined="True" Padding="0,5,0,5">
