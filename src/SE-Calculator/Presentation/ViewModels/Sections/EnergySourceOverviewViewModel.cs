@@ -1,33 +1,34 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Caliburn.Micro;
 using Presentation.Caliburn;
-using Presentation.Extensions;
 using Presentation.Framework;
 using Presentation.Interfaces;
+using Presentation.Model;
 using Presentation.Resources;
+using Presentation.ViewModels.Shared;
 using Action = System.Action;
 
 namespace Presentation.ViewModels.Sections
 {
-	public class EnergySourceViewModel : ScreenValidationBase, IMainTabsControl
+	public class EnergySourceOverviewViewModel : PersistedItemsScreenBase<EnergySource>, IMainTabsControl
 	{
 		public int Order { get; } = 0;
 
-		protected override void OnInitialize()
+		protected override List<EnergySource> LoadItemsFromDefaultFactory()
 		{
-			base.OnInitialize();
+			return DefaultValueFactory.GetDefaultEnergySources();
+		}
 
-			if (!Execute.InDesignMode)
-				return;
+		protected override string GetPersistanceFileName()
+		{
+			return "energysources.json";
 		}
 	}
 

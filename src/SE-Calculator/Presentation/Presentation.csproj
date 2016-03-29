@@ -149,13 +149,14 @@
       <DependentUpon>WindowResources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Sections\NewShipViewModel.cs" />
-    <Compile Include="ViewModels\Sections\EnergySourceViewModel.cs" />
+    <Compile Include="ViewModels\Sections\EnergySourceOverviewViewModel.cs" />
     <Compile Include="ViewModels\Sections\ThrusterOverviewViewModel.cs" />
+    <Compile Include="ViewModels\Shared\PersistedItemsScreenBase.cs" />
     <Compile Include="Views\Sections\NewShipView.xaml.cs">
       <DependentUpon>NewShipView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Sections\EnergySourceView.xaml.cs">
-      <DependentUpon>EnergySourceView.xaml</DependentUpon>
+    <Compile Include="Views\Sections\EnergySourceOverviewView.xaml.cs">
+      <DependentUpon>EnergySourceOverviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Sections\ThrusterOverviewView.xaml.cs">
       <DependentUpon>ThrusterOverviewView.xaml</DependentUpon>
@@ -180,7 +181,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Sections\EnergySourceView.xaml">
+    <Page Include="Views\Sections\EnergySourceOverviewView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

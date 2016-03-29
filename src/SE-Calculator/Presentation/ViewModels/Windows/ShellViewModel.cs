@@ -31,6 +31,8 @@ namespace Presentation.ViewModels.Windows
 
 			await Task.Delay(1000);
 
+			OpenTab(TabOptions.ThrusterOverview);
+			OpenTab(TabOptions.ReactorOverview);
 			OpenTab(TabOptions.NewShip);
 		}
 
@@ -87,7 +89,7 @@ namespace Presentation.ViewModels.Windows
 
 		private void OpenReactorTab()
 		{
-			var tab = Items.FirstOrDefault(d => d.GetType() == typeof(EnergySourceViewModel));
+			var tab = Items.FirstOrDefault(d => d.GetType() == typeof(EnergySourceOverviewViewModel));
 			if (tab != null)
 			{
 				ActivateItem(tab);
@@ -95,8 +97,8 @@ namespace Presentation.ViewModels.Windows
 			}
 
 			IMainTabsControl newTab;
-			newTab = new EnergySourceViewModel();
-			newTab.DisplayName = "Reaktorübersicht";
+			newTab = new EnergySourceOverviewViewModel();
+			newTab.DisplayName = "Energiequellen";
 			this.Items.Add(newTab);
 			ActivateItem(newTab);
 		}

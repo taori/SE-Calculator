@@ -15,9 +15,9 @@
 			<DockPanel Margin="10">
 
 				<StackPanel DockPanel.Dock="Bottom">
-					<Button Content="Werkseinstellungen" cal:Message.Attach="RestoreDefault" Margin="0,5,0,0"></Button>
+					<Button Content="Werkseinstellungen" cal:Message.Attach="RestoreItemsAsync" Margin="0,5,0,0"></Button>
 					<Button Content="Triebwerk anlegen" cal:Message.Attach="CreateNewThruster" Margin="0,5,0,0"></Button>
-					<Button Content="Triebwerke speichern." cal:Message.Attach="SaveThrusters" Margin="0,5,0,0"></Button>
+					<Button Content="Triebwerke speichern." cal:Message.Attach="SaveItemsAsync" Margin="0,5,0,0"></Button>
 				</StackPanel>
 				<StackPanel>
 					<Label Content="Thrustergroesse" Foreground="{StaticResource AccentSelectedColorBrush}"></Label>

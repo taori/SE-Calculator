@@ -1,0 +1,39 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:cal="http://www.caliburnproject.org"
+	xmlns:sections="clr-namespace:Presentation.ViewModels.Sections"
+	x:Class="Presentation.Views.Sections.EnergySourceOverviewView"
+	mc:Ignorable="d"
+	cal:Bind.AtDesignTime="True"
+	d:DataContext="{d:DesignInstance sections:EnergySourceOverviewViewModel}"
+	d:DesignHeight="300" d:DesignWidth="300">
+	<DockPanel>
+		<Button DockPanel.Dock="Bottom" Content="Standardwerte wiederherstellen." cal:Message.Attach="RestoreItemsAsync"></Button>
+		<ItemsControl ItemsSource="{Binding Path=Items}">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="*" />
+
+						</Grid.ColumnDefinitions>
+						<StackPanel Margin="0,0,10,10">
+							<TextBlock Text="Name" />
+							<TextBlock Text="Schiffsgrösse" />
+							<TextBlock Text="Leistungsabgabe (kW)" />
+						</StackPanel>
+						<StackPanel Grid.Column="1" Margin="0,0,0,10">
+							<TextBlock Text="{Binding Path=Name}" />
+							<TextBlock Text="{Binding Path=ShipSize}" />
+							<TextBlock Text="{Binding Path=PowerOutput}" />
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</DockPanel>
+</UserControl>

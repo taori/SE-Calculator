@@ -11,22 +11,13 @@ using Presentation.Extensions;
 using Presentation.Helpers;
 using Presentation.Interfaces;
 using Presentation.Model;
+using Presentation.ViewModels.Shared;
 
 namespace Presentation.ViewModels.Sections
 {
-	public class ThrusterOverviewViewModel : ScreenValidationBase, IMainTabsControl
+	public class ThrusterOverviewViewModel : PersistedItemsScreenBase<Thruster>, IMainTabsControl
 	{
-		public ThrusterOverviewViewModel()
-		{
-			if (Execute.InDesignMode)
-			{
-				LoadThrusters();
-			}
-		}
-
 		public int Order { get; } = 0;
-
-		public BindableCollection<Thruster> Items { get; } = new BindableCollection<Thruster>();
 
 		public BindableCollection<ShipSize> ShipSizeOptions { get; } = new BindableCollection<ShipSize>();
 
@@ -42,7 +33,7 @@ namespace Presentation.ViewModels.Sections
 			set { SetValue(ref _newItem, value, nameof(NewItem)); }
 		}
 
-		protected override async void OnInitialize()
+		protected override void OnInitialize()
 		{
 			base.OnInitialize();
 
@@ -57,71 +48,23 @@ namespace Presentation.ViewModels.Sections
 			ThrusterCategoryOptions.Add(ThrusterCategory.Atmospheric);
 			ThrusterCategoryOptions.Add(ThrusterCategory.Hydrogen);
 			ThrusterCategoryOptions.Add(ThrusterCategory.Ionic);
-			
-			await LoadThrusters();
 		}
 
 		public async void CreateNewThruster()
 		{
 			Items.Add(NewItem);
-			await SaveThrusters();
+			await SaveItemsAsync();
 			NewItem = new Thruster();
 		}
 
-		public async Task RestoreDefault()
-		{
-			var confirmed = await this.ConfirmAsync("Frage", "Sollen wirklich alle Daten gelöscht und die Werkseinstellungen geladen werden?");
-			if (!confirmed)
-				return;
-
-			Items.Clear();
-			Items.AddRange(LoadThrustersFromDefaultFactory());
-			await SaveThrusters();
-		}
-
-		public async Task SaveThrusters()
-		{
-			var serialized = JsonConvert.SerializeObject(Items);
-			File.WriteAllText(await GetThrusterFileNameAsync(), serialized);
-		}
-
-		private async Task LoadThrusters()
-		{
-			var deserialized = await LoadThrustersFromFileAsync();
-
-			if (Items.Count == 0 && deserialized.Count == 0)
-			{
-				Items.AddRange(LoadThrustersFromDefaultFactory());
-				await SaveThrusters();
-			}
-			else
-			{
-				Items.AddRange(deserialized);
-			}
-		}
-
-		private List<Thruster> LoadThrustersFromDefaultFactory()
+		protected override List<Thruster> LoadItemsFromDefaultFactory()
 		{
 			return DefaultValueFactory.GetDefaultThrusters();
 		}
 
-		private static async Task<List<Thruster>> LoadThrustersFromFileAsync()
+		protected override string GetPersistanceFileName()
 		{
-			var path = await GetThrusterFileNameAsync();
-			if (!File.Exists(path))
-				return new List<Thruster>();
-
-			var content = File.ReadAllText(path);
-			var deserialized = JsonConvert.DeserializeObject<List<Thruster>>(content);
-			return deserialized;
-		}
-
-		private static async Task<string> GetThrusterFileNameAsync()
-		{
-			var thrusterFileName = IoHelper.GetFileName(IoHelper.SpecialFolder.Environment, "thrusters.json");
-			await IoHelper.EnsureDirectoryAsync(Path.GetDirectoryName(thrusterFileName));
-
-			return thrusterFileName;
+			return "thrusters.json";
 		}
 	}
 
