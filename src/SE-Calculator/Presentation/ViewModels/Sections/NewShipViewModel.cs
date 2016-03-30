@@ -6,7 +6,9 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using Presentation.Caliburn;
+using Presentation.Extensions;
 using Presentation.Interfaces;
+using Presentation.ViewModels.Dialogs;
 
 namespace Presentation.ViewModels.Sections
 {
@@ -56,68 +58,14 @@ namespace Presentation.ViewModels.Sections
 			set { SetValue(ref _efficiency, value, nameof(Efficiency)); }
 		}
 
-		public void AddThrusterDialog()
+		public async void AddThrusterDialog()
 		{
-//			var view = ViewLocator.lo
-			var w = App.Current.MainWindow as MetroWindow;
-			if (w == null)
-				return;
-			w.ShowMetroDialogAsync(new NewThrusterDialog(), new MetroDialogSettings()
-			{
-				AffirmativeButtonText = "OK",
-				AnimateShow = true,
-				NegativeButtonText = "Go away!",
-				FirstAuxiliaryButtonText = "Cancel",
-			});
+			await this.ShowDialogAsync(new NewThrusterDialogViewModel());
 		}
 
-		public void AddEnergySourceDialog()
+		public async void AddEnergySourceDialog()
 		{
-			var w = App.Current.MainWindow as MetroWindow;
-			if (w == null)
-				return;
-			w.ShowMetroDialogAsync(new NewEnergySourceDialog(), new MetroDialogSettings()
-			{
-				AffirmativeButtonText = "OK",
-				AnimateShow = true,
-				NegativeButtonText = "Go away!",
-				FirstAuxiliaryButtonText = "Cancel",
-			});
-
-		}
-	}
-
-	public class NewThrusterDialog : CustomDialog
-	{
-		public NewThrusterDialog()
-		{
-			Background = Brushes.Red;
-			Content = new DockPanel();
-			{
-				Background = Brushes.Purple;
-				Content = new Border()
-				{
-					Margin = new Thickness(10),
-					Background = Brushes.Green
-				};
-			};
-		}
-	}
-
-	public class NewEnergySourceDialog : CustomDialog
-	{
-		public NewEnergySourceDialog()
-		{
-			Background = Brushes.Red;
-			Content = new DockPanel();
-			{
-				Background = Brushes.Purple;
-				Content = new Border()
-				{
-					Margin = new Thickness(10),
-					Background = Brushes.Green
-				};
-			};
+			await this.ShowDialogAsync(new NewEnergySourceViewModel());
 		}
 	}
 }

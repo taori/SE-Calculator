@@ -6,6 +6,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Presentation.Interfaces;
 using Presentation.Proxies;
+using Presentation.ViewModels.Sections;
 
 namespace Presentation.Extensions
 {
@@ -18,6 +19,28 @@ namespace Presentation.Extensions
 
 	public static class INotifyPropertyChangedExtensions
 	{
+		public static async Task<bool> ShowDialogAsync(this INotifyPropertyChangedEx source, object viewModel)
+		{
+			var w = App.Current.MainWindow as MetroWindow;
+			if (w == null)
+				return false;
+
+			var settings = new MetroDialogSettings()
+			{
+				AffirmativeButtonText = "OK",
+				AnimateShow = true,
+				NegativeButtonText = "Go away!",
+				FirstAuxiliaryButtonText = "Cancel",
+			};
+
+			var view = ViewLocator.LocateForModel(viewModel, null, null);
+			var dialogWrapper = new CustomDialog() {Content = view};
+			dialogWrapper.Title = "testtitle";
+			await w.ShowMetroDialogAsync(dialogWrapper, settings);
+
+			return true;
+		}
+
 		public static async Task<bool> ConfirmAsync(this INotifyPropertyChangedEx source, string title, string message, string yesText = null, string noText = null)
 		{
 			var window = App.Current.MainWindow as MetroWindow;

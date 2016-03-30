@@ -148,10 +148,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WindowResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Dialogs\NewEnergySourceViewModel.cs" />
+    <Compile Include="ViewModels\Dialogs\NewThrusterDialogViewModel.cs" />
     <Compile Include="ViewModels\Sections\NewShipViewModel.cs" />
     <Compile Include="ViewModels\Sections\EnergySourceOverviewViewModel.cs" />
     <Compile Include="ViewModels\Sections\ThrusterOverviewViewModel.cs" />
     <Compile Include="ViewModels\Shared\PersistedItemsScreenBase.cs" />
+    <Compile Include="Views\Dialogs\NewEnergySourceView.xaml.cs">
+      <DependentUpon>NewEnergySourceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\NewThrusterDialogView.xaml.cs">
+      <DependentUpon>NewThrusterDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Sections\NewShipView.xaml.cs">
       <DependentUpon>NewShipView.xaml</DependentUpon>
     </Compile>
@@ -174,6 +182,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\NewEnergySourceView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\NewThrusterDialogView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
