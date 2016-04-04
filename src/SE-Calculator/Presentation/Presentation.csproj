@@ -115,6 +115,7 @@
     <Compile Include="Caliburn\ISupportValidation.cs" />
     <Compile Include="Caliburn\PropertyChangedValidationBase.cs" />
     <Compile Include="Caliburn\ScreenValidationBase.cs" />
+    <Compile Include="Controls\MultiButtonDialog.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\INotifyPropertyChangedExtensions.cs" />
     <Compile Include="Framework\Attributes\IsModifiedTrackingAttribute.cs" />

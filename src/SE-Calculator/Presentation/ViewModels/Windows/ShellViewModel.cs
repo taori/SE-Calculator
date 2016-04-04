@@ -44,8 +44,6 @@ namespace Presentation.ViewModels.Windows
 
 		public void OpenTab(TabOptions tab)
 		{
-			IMainTabsControl newTab;
-
 			switch (tab)
 			{
 				case TabOptions.ReactorOverview:
@@ -65,7 +63,7 @@ namespace Presentation.ViewModels.Windows
 		private void OpenNewShipTab()
 		{
 			IMainTabsControl newTab;
-			newTab = new NewShipViewModel();
+			newTab = new NewShipViewModel(ShipSize.Small);
 			newTab.DisplayName = "Neues Schiff";
 			this.Items.Add(newTab);
 			ActivateItem(newTab);

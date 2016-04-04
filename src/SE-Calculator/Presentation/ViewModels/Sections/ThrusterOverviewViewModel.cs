@@ -145,5 +145,7 @@ namespace Presentation.ViewModels.Sections
 			get { return _mass; }
 			set { SetValue(ref _mass, value, nameof(Mass)); }
 		}
+
+		public string DisplayName => $"{Category} {EngineSize}, {Thrust}kN, {PowerConsumption}kW, {Mass}kg";
 	}
 }

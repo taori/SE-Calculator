@@ -3,6 +3,12 @@ using System.Windows.Input;
 
 namespace Presentation.Framework
 {
+	public class RelayCommand : RelayCommand<object>
+	{
+		public RelayCommand(Action<object> execute) : base(execute) {}
+		public RelayCommand(Action<object> execute, Predicate<object> canExecute) : base(execute, canExecute) {}
+	}
+
 	public class RelayCommand<T> : ICommand
 	{
 		#region Declarations

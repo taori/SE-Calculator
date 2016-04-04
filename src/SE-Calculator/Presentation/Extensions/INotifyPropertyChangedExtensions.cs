@@ -1,9 +1,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 using Caliburn.Micro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Presentation.Controls;
 using Presentation.Interfaces;
 using Presentation.Proxies;
 using Presentation.ViewModels.Sections;
@@ -19,26 +24,20 @@ namespace Presentation.Extensions
 
 	public static class INotifyPropertyChangedExtensions
 	{
-		public static async Task<bool> ShowDialogAsync(this INotifyPropertyChangedEx source, object viewModel)
+		public static async Task<MultiButtonDialogController> CreateDialogAsync(this INotifyPropertyChangedEx source, object viewModel, bool animate = false)
 		{
-			var w = App.Current.MainWindow as MetroWindow;
-			if (w == null)
-				return false;
-
-			var settings = new MetroDialogSettings()
-			{
-				AffirmativeButtonText = "OK",
-				AnimateShow = true,
-				NegativeButtonText = "Go away!",
-				FirstAuxiliaryButtonText = "Cancel",
-			};
+			var currentWindow = App.Current.MainWindow as MetroWindow;
+			if (currentWindow == null)
+				throw new ArgumentException("The MainWindow expects a MetroWindow instance.");
 
 			var view = ViewLocator.LocateForModel(viewModel, null, null);
-			var dialogWrapper = new CustomDialog() {Content = view};
-			dialogWrapper.Title = "testtitle";
-			await w.ShowMetroDialogAsync(dialogWrapper, settings);
+			var dialog = new MultiButtonDialog();
+			dialog.DataContext = viewModel;
+			dialog.Content = view;
 
-			return true;
+			var controller = new MultiButtonDialogController(dialog, currentWindow);
+
+			return controller;
 		}
 
 		public static async Task<bool> ConfirmAsync(this INotifyPropertyChangedEx source, string title, string message, string yesText = null, string noText = null)

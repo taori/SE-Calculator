@@ -3,35 +3,127 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:converters="clr-namespace:Presentation.Framework.Converters"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:viewModels="clr-namespace:Presentation.ViewModels">
+                    xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+                    xmlns:controls1="clr-namespace:Presentation.Controls"
+                    xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro">
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary>
 
-	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-	<converters:BooleanToVisibilityConverterInverted x:Key="BooleanToVisibilityConverterInverted" />
-	<converters:BooleanConverterInverted x:Key="BooleanConverterInverted" />
+			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+			<converters:BooleanToVisibilityConverterInverted x:Key="BooleanToVisibilityConverterInverted" />
+			<converters:BooleanConverterInverted x:Key="BooleanConverterInverted" />
 
-	<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-		<Setter Property="controls:TextBoxHelper.UseFloatingWatermark" Value="True"/>
-		<Setter Property="controls:TextBoxHelper.IsWaitingForData" Value="True"/>
-	</Style>
+			<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+				<Setter Property="controls:TextBoxHelper.UseFloatingWatermark" Value="True"/>
+				<Setter Property="controls:TextBoxHelper.IsWaitingForData" Value="True"/>
+			</Style>
 
-	<Style x:Key="MetroWindowDefault" TargetType="controls:MetroWindow" BasedOn="{StaticResource {x:Type controls:MetroWindow}}">
-		<Setter Property="TitleCaps" Value="False" />
-		<Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}" />
-		<Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
-<!--		<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}" />-->
-	</Style>
+			<Style x:Key="MetroWindowDefault" TargetType="controls:MetroWindow" BasedOn="{StaticResource {x:Type controls:MetroWindow}}">
+				<Setter Property="TitleCaps" Value="False" />
+				<Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}" />
+				<Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
+				<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}" />
+			</Style>
 
-	<Style TargetType="{x:Type ScrollViewer}">
-		<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-	</Style>
+			<Style TargetType="controls1:MultiButtonDialog" BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<ControlTemplate.Resources>
+								<Storyboard x:Key="DialogShownStoryboard">
+									<DoubleAnimation AccelerationRatio=".9"
+												BeginTime="0:0:0"
+												Duration="0:0:0.2"
+												Storyboard.TargetProperty="Opacity"
+												To="1" />
+								</Storyboard>
+							</ControlTemplate.Resources>
+							<Grid Background="{TemplateBinding Background}">
+								<Border FocusVisualStyle="{x:Null}" Focusable="False">
+									<Grid>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto" />
+											<RowDefinition Height="*" />
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+										<ContentPresenter Grid.Row="0" Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogTop, Mode=OneWay}" />
+										<Grid Grid.Row="1">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="25*" />
+												<ColumnDefinition Width="50*" />
+												<ColumnDefinition Width="25*" />
+											</Grid.ColumnDefinitions>
+											<!--  Content area  -->
+											<Grid Grid.Column="1" Margin="0 10 0 0">
+												<Grid.RowDefinitions>
+													<RowDefinition Height="Auto" />
+													<RowDefinition Height="*" />
+													<RowDefinition Height="Auto" />
+												</Grid.RowDefinitions>
+												<TextBlock Grid.Row="0"
+															FontSize="{DynamicResource DialogTitleFontSize}"
+															Foreground="{TemplateBinding Foreground}"
+															Text="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Title, Mode=OneWay}"
+															TextWrapping="Wrap" />
+												<ContentPresenter Grid.Row="1"
+															Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Content, Mode=OneWay}" />
+												<ItemsControl Grid.Row="2" 
+													HorizontalAlignment="Right"
+													Margin="0,10,0,20"
+													ItemsPanel="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonPanelTemplate, Mode=OneWay}"
+													ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=GeneratedButtons, Mode=OneWay}">
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<Button Margin="10,0,0,0" Content="{Binding Path=Item2}" Command="{Binding Path=Item1}" Style="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonStyle, Mode=OneWay}"></Button>
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+												</ItemsControl>
+											</Grid>
+										</Grid>
+										<ContentPresenter Grid.Row="2"
+													Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogBottom, Mode=OneWay}" />
+									</Grid>
+								</Border>
+							</Grid>
+							<ControlTemplate.Triggers>
+								<EventTrigger RoutedEvent="Loaded">
+									<EventTrigger.Actions>
+										<BeginStoryboard Storyboard="{StaticResource DialogShownStoryboard}" />
+									</EventTrigger.Actions>
+								</EventTrigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="ButtonStyle">
+					<Setter.Value>
+						<Style TargetType="Button">
+<!--							<Setter Property="Style" Value="{StaticResource HighlightedSquareButtonStyle}" />-->
+							<Setter Property="Padding" Value="20,7" />
+						</Style>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="ButtonPanelTemplate">
+					<Setter.Value>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal"></StackPanel>
+						</ItemsPanelTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
 
-	<SolidColorBrush Color="Yellow" x:Key="CustomModifiedBrush"></SolidColorBrush>
-	<SolidColorBrush Color="Green" x:Key="CustomValidBrush"></SolidColorBrush>
+			<Style TargetType="{x:Type ScrollViewer}">
+				<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+			</Style>
 
-	<system:Double x:Key="FontSizeListHeader">20</system:Double>
-	<system:Double x:Key="FontSizeScrollHeader">20</system:Double>
-	<Thickness x:Key="WindowPadding">15</Thickness>
-	<Thickness x:Key="WindowPaddingTop">0,15,0,0</Thickness>
-	<Thickness x:Key="WindowPaddingBottom">0,0,0,15</Thickness>
+			<SolidColorBrush Color="Yellow" x:Key="CustomModifiedBrush"></SolidColorBrush>
+			<SolidColorBrush Color="Green" x:Key="CustomValidBrush"></SolidColorBrush>
 
+			<system:Double x:Key="FontSizeListHeader">20</system:Double>
+			<system:Double x:Key="FontSizeScrollHeader">20</system:Double>
+			<Thickness x:Key="WindowPadding">15</Thickness>
+			<Thickness x:Key="WindowPaddingTop">0,15,0,0</Thickness>
+			<Thickness x:Key="WindowPaddingBottom">0,0,0,15</Thickness>
+		</ResourceDictionary>
+	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

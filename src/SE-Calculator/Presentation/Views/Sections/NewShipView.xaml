@@ -22,7 +22,7 @@
 			</StackPanel>
 		</Border>
 		<UniformGrid Rows="1" Columns="2">
-			<DockPanel Margin="10">
+			<DockPanel Margin="10,10,10,0">
 				<TextBlock DockPanel.Dock="Top" Text="Triebwerke" Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neues Triebwerk" cal:Message.Attach="AddThrusterDialog"></Button>
 				<ItemsControl ItemsSource="{Binding Path=Thrusters}" Margin="0,10">
@@ -35,27 +35,23 @@
 									<Run Text="{Binding Path=EngineSize}"></Run>
 								</TextBlock>
 								<TextBlock>
-									<Run Text="Schiffsgröße:"></Run>
-									<Run Text="{Binding Path=ShipSize}"></Run>
-								</TextBlock>
-								<TextBlock>
 									<Run Text="Masse:"></Run>
-									<Run Text="{Binding Path=Mass}"></Run>
+									<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}"></Run>
 								</TextBlock>
 								<TextBlock>
 									<Run Text="Energieverbrauch:"></Run>
-									<Run Text="{Binding Path=PowerConsumption}"></Run>
+									<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}"></Run>
 								</TextBlock>
 								<TextBlock>
 									<Run Text="Schub:"></Run>
-									<Run Text="{Binding Path=Thrust}"></Run>
+									<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}"></Run>
 								</TextBlock>
 							</StackPanel>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</DockPanel>
-			<DockPanel Margin="10">
+			<DockPanel Margin="10,10,10,0">
 				<TextBlock DockPanel.Dock="Top" Text="Energiequellen" Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neue energiequelle" cal:Message.Attach="AddEnergySourceDialog"></Button>
 				<ItemsControl ItemsSource="{Binding Path=EnergySources}" ItemTemplate="{StaticResource DataTemplateEnergySource}" Margin="0,10"></ItemsControl>

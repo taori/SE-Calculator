@@ -18,7 +18,6 @@ namespace Presentation
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			this.ShutdownMode = ShutdownMode.OnMainWindowClose;
-
 			DispatcherUnhandledException += OnDispatcherUnhandledException;
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;

@@ -5,17 +5,19 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:converters="clr-namespace:Presentation.Framework.Converters"
              xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             xmlns:sections="clr-namespace:Presentation.ViewModels.Sections">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Cyan.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                <ResourceDictionary Source="Resources/Icons.xaml" />
-                <ResourceDictionary Source="Resources/CustomStyles.xaml" />
+             xmlns:sections="clr-namespace:Presentation.ViewModels.Sections"
+             xmlns:controls1="clr-namespace:Presentation.Controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib">
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Orange.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+				<ResourceDictionary Source="Resources/Icons.xaml" />
+				<ResourceDictionary Source="Resources/CustomStyles.xaml" />
 				<ResourceDictionary>
 					<local:AppBootstrapper x:Key="Bootstrapper"></local:AppBootstrapper>
 
@@ -24,22 +26,15 @@
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="*" />
-
 							</Grid.ColumnDefinitions>
-							<StackPanel Margin="0,0,10,10">
-								<TextBlock Text="Name" />
-								<TextBlock Text="Schiffsgrösse" />
-								<TextBlock Text="Leistungsabgabe (kW)" />
-							</StackPanel>
 							<StackPanel Grid.Column="1" Margin="0,0,0,10">
-								<TextBlock Text="{Binding Path=Name}" />
-								<TextBlock Text="{Binding Path=ShipSize}" />
-								<TextBlock Text="{Binding Path=PowerOutput}" />
+								<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" />
+								<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
 							</StackPanel>
 						</Grid>
 					</DataTemplate>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
-    </Application.Resources>
+	</Application.Resources>
 </Application>

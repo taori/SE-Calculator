@@ -1,5 +1,8 @@
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using Caliburn.Micro;
 using MahApps.Metro.Controls;
@@ -14,6 +17,11 @@ namespace Presentation.ViewModels.Sections
 {
 	public class NewShipViewModel : ScreenValidationBase, IMainTabsControl
 	{
+		public NewShipViewModel(ShipSize size)
+		{
+			ShipSize = size;
+		}
+
 		public int Order { get; } = 0;
 
 		protected override void OnInitialize()
@@ -28,6 +36,14 @@ namespace Presentation.ViewModels.Sections
 		public BindableCollection<EnergySource> EnergySources { get; } = new BindableCollection<EnergySource>();
 
 		public BindableCollection<Thruster> Thrusters { get; } = new BindableCollection<Thruster>();
+
+		private ShipSize _shipSize;
+
+		public ShipSize ShipSize
+		{
+			get { return _shipSize; }
+			set { SetValue(ref _shipSize, value, nameof(ShipSize)); }
+		}
 		
 		private int _desiredMass;
 
@@ -60,12 +76,38 @@ namespace Presentation.ViewModels.Sections
 
 		public async void AddThrusterDialog()
 		{
-			await this.ShowDialogAsync(new NewThrusterDialogViewModel());
+//			var b = await this.ConfirmAsync("hi", "no");
+			var item = new NewThrusterDialogViewModel();
+			var source = new ThrusterOverviewViewModel();
+			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
+			var dialog = await this.CreateDialogAsync(item);
+			dialog.Title = "Neues Triebwerk auswählen:";
+			dialog.AddButton(async () =>
+			{
+				var cvs = CollectionViewSource.GetDefaultView(item.Items);
+				var current = cvs.CurrentItem as Thruster;
+				Thrusters.Add(current);
+				await dialog.HideAsync();
+			}, "Übernehmen");
+			await dialog.ShowAsync();
 		}
 
 		public async void AddEnergySourceDialog()
 		{
-			await this.ShowDialogAsync(new NewEnergySourceViewModel());
+			//			var b = await this.ConfirmAsync("hi", "no");
+			var item = new NewEnergySourceViewModel();
+			var source = new EnergySourceOverviewViewModel();
+			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
+			var dialog = await this.CreateDialogAsync(item);
+			dialog.Title = "Neue Energiequelle auswählen:";
+			dialog.AddButton(async () =>
+			{
+				var cvs = CollectionViewSource.GetDefaultView(item.Items);
+				var current = cvs.CurrentItem as EnergySource;
+				EnergySources.Add(current);
+				await dialog.HideAsync();
+			}, "Übernehmen");
+			await dialog.ShowAsync();
 		}
 	}
 }

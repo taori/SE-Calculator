@@ -65,7 +65,7 @@ namespace Presentation.ViewModels.Shared
 
 		protected abstract string GetPersistanceFileName();
 
-		protected async Task<List<TItemType>> LoadItemsFromFileAsync()
+		public async Task<List<TItemType>> LoadItemsFromFileAsync()
 		{
 			var path = await GetFileNameAndEnsureDirectoryAsync();
 			if (!File.Exists(path))
