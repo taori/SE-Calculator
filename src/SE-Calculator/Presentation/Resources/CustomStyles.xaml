@@ -12,7 +12,7 @@
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 			<converters:BooleanToVisibilityConverterInverted x:Key="BooleanToVisibilityConverterInverted" />
 			<converters:BooleanConverterInverted x:Key="BooleanConverterInverted" />
-			<converters:ColorTintConverter AlphaPercent="50" x:Key="ColorTintConverterSemiTransparent"></converters:ColorTintConverter>
+			<converters:ColorTintConverter AlphaPercent="50" x:Key="ColorTintConverterSemiTransparent" />
 
 			<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
 				<Setter Property="controls:TextBoxHelper.UseFloatingWatermark" Value="True" />
@@ -26,7 +26,7 @@
 				<Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
 				<Setter Property="GlowBrush" Value="{DynamicResource AccentColorBrush}" />
 			</Style>
-
+			
 			<Style TargetType="controls1:MultiButtonDialog" BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
 				<Setter Property="Template">
 					<Setter.Value>

@@ -6,6 +6,8 @@
 	xmlns:cal="http://www.caliburnproject.org"
 	xmlns:sections="clr-namespace:Presentation.ViewModels.Sections"
 	xmlns:converters="clr-namespace:Presentation.Framework.Converters"
+	xmlns:fa="http://schemas.fontawesome.io/icons/"
+	xmlns:controls="clr-namespace:Presentation.Controls"
 	x:Class="Presentation.Views.Sections.NewShipView"
 	mc:Ignorable="d"
 	cal:Bind.AtDesignTime="True"
@@ -48,25 +50,44 @@
 							<Border Margin="0,0,0,10"
 							        Padding="5"
 							        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
-								<StackPanel>
-									<TextBlock Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
-									<TextBlock>
-										<Run Text="Triebwerksgröße:" />
-										<Run Text="{Binding Path=EngineSize}" />
-									</TextBlock>
-									<TextBlock>
-										<Run Text="Masse:" />
-										<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}" />
-									</TextBlock>
-									<TextBlock>
-										<Run Text="Energieverbrauch:" />
-										<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}" />
-									</TextBlock>
-									<TextBlock>
-										<Run Text="Schub:" />
-										<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}" />
-									</TextBlock>
-								</StackPanel>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<StackPanel>
+										<TextBlock Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
+										<TextBlock>
+											<Run Text="Triebwerksgröße:" />
+											<Run Text="{Binding Path=EngineSize}" />
+										</TextBlock>
+										<TextBlock>
+											<Run Text="Masse:" />
+											<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}" />
+										</TextBlock>
+										<TextBlock>
+											<Run Text="Energieverbrauch:" />
+											<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}" />
+										</TextBlock>
+										<TextBlock>
+											<Run Text="Schub:" />
+											<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}" />
+										</TextBlock>
+									</StackPanel>
+									<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+										<controls:CanvasButton Canvas="{StaticResource appbar_delete}"/>
+										<ContentPresenter Content="{StaticResource appbar_delete}">
+											<ContentPresenter.LayoutTransform>
+												<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+											</ContentPresenter.LayoutTransform>
+										</ContentPresenter>
+										<ContentPresenter Content="{StaticResource appbar_page_copy}">
+											<ContentPresenter.LayoutTransform>
+												<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+											</ContentPresenter.LayoutTransform>
+										</ContentPresenter>
+									</StackPanel>
+								</Grid>
 							</Border>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
