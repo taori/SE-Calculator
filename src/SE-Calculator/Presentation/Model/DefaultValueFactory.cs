@@ -7,8 +7,12 @@ namespace Presentation.Model
 	{
 		public static List<EnergySource> GetDefaultEnergySources()
 		{
-			// based on http://www.spaceengineerswiki.com/Reactor / http://www.spaceengineerswiki.com/Small_Reactor
-
+			/* based on 
+			** http://www.spaceengineerswiki.com/Reactor
+			** http://www.spaceengineerswiki.com/Small_Reactor
+			** http://www.spaceengineerswiki.com/Battery
+			*/
+			
 			var result = new List<EnergySource>();
 			result.Add(new EnergySource()
 			{
@@ -33,6 +37,19 @@ namespace Presentation.Model
 				Name = "Kleiner Reaktor",
 				ShipSize = ShipSize.Small,
 				PowerOutput = 500
+			});
+
+			result.Add(new EnergySource()
+			{
+				Name = "Batterie",
+				ShipSize = ShipSize.Small,
+				PowerOutput = 4320
+			});
+			result.Add(new EnergySource()
+			{
+				Name = "Batterie",
+				ShipSize = ShipSize.Large,
+				PowerOutput = 12000
 			});
 
 			return result;

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Presentation.Interfaces;
+using Presentation.Model;
 using Presentation.Resources;
 using Presentation.ViewModels.Sections;
 

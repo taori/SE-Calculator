@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Presentation.Caliburn;
+using Presentation.Model;
 using Presentation.ViewModels.Sections;
 
 namespace Presentation.ViewModels.Dialogs

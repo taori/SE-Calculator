@@ -12,25 +12,42 @@ using Action = System.Action;
 
 namespace Presentation.Controls
 {
-	[StyleTypedProperty(Property = nameof(ButtonStyle), StyleTargetType = typeof(Button))]
+	[StyleTypedProperty(Property = nameof(MultiButtonDialog.ButtonStyle), StyleTargetType = typeof (Button))]
+	[StyleTypedProperty(Property = nameof(MultiButtonDialog.HighlightedButtonStyle), StyleTargetType = typeof (Button))]
 	public class MultiButtonDialog : BaseMetroDialog
 	{
+		public class ButtonEntry
+		{
+			public ButtonEntry(string text, ICommand command, bool isHighlighted)
+			{
+				Text = text;
+				Command = command;
+				IsHighlighted = isHighlighted;
+			}
+
+			public string Text { get; set; }
+
+			public ICommand Command { get; set; }
+
+			public bool IsHighlighted { get; set; }
+		}
+
 		static MultiButtonDialog()
 		{
-			FrameworkElement.DefaultStyleKeyProperty.OverrideMetadata(typeof(MultiButtonDialog), (PropertyMetadata)new FrameworkPropertyMetadata((object)typeof(MultiButtonDialog)));
+			FrameworkElement.DefaultStyleKeyProperty.OverrideMetadata(typeof (MultiButtonDialog), (PropertyMetadata) new FrameworkPropertyMetadata((object) typeof (MultiButtonDialog)));
 		}
 
 		public MultiButtonDialog()
 		{
-			GeneratedButtons = new BindableCollection<Tuple<ICommand, string>>();
+			GeneratedButtons = new BindableCollection<ButtonEntry>();
 		}
 
 		public static readonly DependencyProperty GeneratedButtonsProperty = DependencyProperty.Register(
-			nameof(GeneratedButtons), typeof(BindableCollection<Tuple<ICommand, string>>), typeof(MultiButtonDialog), new PropertyMetadata(default(BindableCollection<Tuple<ICommand, string>>)));
+			nameof(GeneratedButtons), typeof (BindableCollection<ButtonEntry>), typeof (MultiButtonDialog), new PropertyMetadata(default(BindableCollection<ButtonEntry>)));
 
-		public BindableCollection<Tuple<ICommand, string>> GeneratedButtons
+		public BindableCollection<ButtonEntry> GeneratedButtons
 		{
-			get { return (BindableCollection<Tuple<ICommand, string>>)GetValue(GeneratedButtonsProperty); }
+			get { return (BindableCollection<ButtonEntry>) GetValue(GeneratedButtonsProperty); }
 			set { SetValue(GeneratedButtonsProperty, value); }
 		}
 
@@ -44,30 +61,39 @@ namespace Presentation.Controls
 		}
 
 		public static readonly DependencyProperty DisplayTemplateProperty = DependencyProperty.Register(
-			nameof(DisplayTemplate), typeof(object), typeof(MultiButtonDialog), new PropertyMetadata(default(object)));
+			nameof(DisplayTemplate), typeof (object), typeof (MultiButtonDialog), new PropertyMetadata(default(object)));
 
 		public object DisplayTemplate
 		{
-			get { return (object)GetValue(DisplayTemplateProperty); }
+			get { return (object) GetValue(DisplayTemplateProperty); }
 			set { SetValue(DisplayTemplateProperty, value); }
 		}
 
 		public static readonly DependencyProperty ButtonPanelTemplateProperty = DependencyProperty.Register(
-			nameof(ButtonPanelTemplate), typeof(ItemsPanelTemplate), typeof(MultiButtonDialog), new PropertyMetadata(default(ItemsPanelTemplate)));
+			nameof(ButtonPanelTemplate), typeof (ItemsPanelTemplate), typeof (MultiButtonDialog), new PropertyMetadata(default(ItemsPanelTemplate)));
 
 		public ItemsPanelTemplate ButtonPanelTemplate
 		{
-			get { return (ItemsPanelTemplate)GetValue(ButtonPanelTemplateProperty); }
+			get { return (ItemsPanelTemplate) GetValue(ButtonPanelTemplateProperty); }
 			set { SetValue(ButtonPanelTemplateProperty, value); }
 		}
 
 		public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(
-			nameof(ButtonStyle), typeof(Style), typeof(MultiButtonDialog), new PropertyMetadata(default(Style)));
+			nameof(ButtonStyle), typeof (Style), typeof (MultiButtonDialog), new PropertyMetadata(default(Style)));
 
 		public Style ButtonStyle
 		{
-			get { return (Style)GetValue(ButtonStyleProperty); }
+			get { return (Style) GetValue(ButtonStyleProperty); }
 			set { SetValue(ButtonStyleProperty, value); }
+		}
+
+		public static readonly DependencyProperty HighlightedButtonStyleProperty = DependencyProperty.Register(
+			nameof(HighlightedButtonStyle), typeof (Style), typeof (MultiButtonDialog), new PropertyMetadata(default(Style)));
+
+		public Style HighlightedButtonStyle
+		{
+			get { return (Style) GetValue(HighlightedButtonStyleProperty); }
+			set { SetValue(HighlightedButtonStyleProperty, value); }
 		}
 
 		protected override void OnVisualParentChanged(DependencyObject oldParent)
@@ -124,9 +150,9 @@ namespace Presentation.Controls
 			set { _dialog.Title = value; }
 		}
 
-		public void AddButton(System.Action action, string text)
+		public void AddButton(System.Action action, string text, bool isHighlighted = false)
 		{
-			_dialog.GeneratedButtons.Add(new Tuple<ICommand, string>(new RelayCommand<object>(o => action()), text));
+			_dialog.GeneratedButtons.Add(new MultiButtonDialog.ButtonEntry(text, new RelayCommand(d => action()), isHighlighted));
 		}
 	}
 }

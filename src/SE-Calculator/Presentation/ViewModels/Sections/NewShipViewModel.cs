@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +14,7 @@ using Newtonsoft.Json;
 using Presentation.Caliburn;
 using Presentation.Extensions;
 using Presentation.Interfaces;
+using Presentation.Model;
 using Presentation.ViewModels.Dialogs;
 
 namespace Presentation.ViewModels.Sections
@@ -31,6 +35,94 @@ namespace Presentation.ViewModels.Sections
 			DesiredMass = 200000;
 			Gravity = 9.81f;
 			Efficiency = 0.9f;
+
+			EnergySources.CollectionChanged += EnergySourcesChanged;
+			Thrusters.CollectionChanged += ThrustersChanged;
+		}
+
+		private void ThrustersChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null)
+			{
+				foreach (Thruster item in e.NewItems)
+				{
+					item.PropertyChanged += CalculationPropertyChanged;
+				}
+			}
+
+			if (e.OldItems != null)
+			{
+				foreach (Thruster item in e.OldItems)
+				{
+					item.PropertyChanged -= CalculationPropertyChanged;
+				}
+			}
+			RecalculateValues();
+		}
+
+		private void EnergySourcesChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null)
+			{
+				foreach (EnergySource item in e.NewItems)
+				{
+					item.PropertyChanged += CalculationPropertyChanged;
+				}
+			}
+
+			if (e.OldItems != null)
+			{
+				foreach (EnergySource item in e.OldItems)
+				{
+					item.PropertyChanged -= CalculationPropertyChanged;
+				}
+			}
+			RecalculateValues();
+		}
+
+		private void CalculationPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		{
+			RecalculateValues();
+		}
+
+		private void RecalculateValues()
+		{
+			AvailableThrust = Thrusters.Sum(s => s.Thrust);
+			TotalPowerConsumption = Thrusters.Sum(s => s.PowerConsumption);
+			AvailableEnergyOutput = EnergySources.Sum(s => s.PowerOutput);
+		}
+
+		private int _totalPowerConsumption;
+
+		/// <summary>
+		/// kW
+		/// </summary>
+		public int TotalPowerConsumption
+		{
+			get { return _totalPowerConsumption; }
+			set { SetValue(ref _totalPowerConsumption, value, nameof(TotalPowerConsumption)); }
+		}
+
+		private int _availableThrust;
+
+		/// <summary>
+		/// kN
+		/// </summary>
+		public int AvailableThrust
+		{
+			get { return _availableThrust; }
+			set { SetValue(ref _availableThrust, value, nameof(AvailableThrust)); }
+		}
+
+		private int _availableEnergyOutput;
+
+		/// <summary>
+		/// kW
+		/// </summary>
+		public int AvailableEnergyOutput
+		{
+			get { return _availableEnergyOutput; }
+			set { SetValue(ref _availableEnergyOutput, value, nameof(AvailableEnergyOutput)); }
 		}
 
 		public BindableCollection<EnergySource> EnergySources { get; } = new BindableCollection<EnergySource>();
@@ -44,7 +136,7 @@ namespace Presentation.ViewModels.Sections
 			get { return _shipSize; }
 			set { SetValue(ref _shipSize, value, nameof(ShipSize)); }
 		}
-		
+
 		private int _desiredMass;
 
 		/// <summary>
@@ -57,6 +149,7 @@ namespace Presentation.ViewModels.Sections
 		}
 
 		private float _gravity;
+
 		/// <summary>
 		/// m/s²
 		/// </summary>
@@ -76,7 +169,6 @@ namespace Presentation.ViewModels.Sections
 
 		public async void AddThrusterDialog()
 		{
-//			var b = await this.ConfirmAsync("hi", "no");
 			var item = new NewThrusterDialogViewModel();
 			var source = new ThrusterOverviewViewModel();
 			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
@@ -88,13 +180,13 @@ namespace Presentation.ViewModels.Sections
 				var current = cvs.CurrentItem as Thruster;
 				Thrusters.Add(current);
 				await dialog.HideAsync();
-			}, "Übernehmen");
+			}, "Übernehmen", true);
+
 			await dialog.ShowAsync();
 		}
 
 		public async void AddEnergySourceDialog()
 		{
-			//			var b = await this.ConfirmAsync("hi", "no");
 			var item = new NewEnergySourceViewModel();
 			var source = new EnergySourceOverviewViewModel();
 			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
@@ -106,7 +198,8 @@ namespace Presentation.ViewModels.Sections
 				var current = cvs.CurrentItem as EnergySource;
 				EnergySources.Add(current);
 				await dialog.HideAsync();
-			}, "Übernehmen");
+			}, "Übernehmen", true);
+
 			await dialog.ShowAsync();
 		}
 	}

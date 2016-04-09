@@ -118,11 +118,13 @@
     <Compile Include="Controls\MultiButtonDialog.cs" />
     <Compile Include="Extensions\GenericExtensions.cs" />
     <Compile Include="Extensions\INotifyPropertyChangedExtensions.cs" />
+    <Compile Include="Extensions\MathHelper.cs" />
     <Compile Include="Framework\Attributes\IsModifiedTrackingAttribute.cs" />
     <Compile Include="Framework\ContainsStringAttribute.cs" />
     <Compile Include="Framework\Converters\BooleanConverter.cs" />
     <Compile Include="Framework\Converters\BooleanConverterInverted.cs" />
     <Compile Include="Framework\Converters\BooleanToVisibilityConverterInverted.cs" />
+    <Compile Include="Framework\Converters\ColorTintConverter.cs" />
     <Compile Include="Framework\RelayCommand.cs" />
     <Compile Include="Helpers\IoHelper.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
@@ -133,6 +135,11 @@
     <Compile Include="Mef\MefExtensions.cs" />
     <Compile Include="Mef\PartCreationPolicyAttribute.cs" />
     <Compile Include="Model\DefaultValueFactory.cs" />
+    <Compile Include="Model\EnergySource.cs" />
+    <Compile Include="Model\EngineSize.cs" />
+    <Compile Include="Model\ShipSize.cs" />
+    <Compile Include="Model\Thruster.cs" />
+    <Compile Include="Model\ThrusterCategory.cs" />
     <Compile Include="Proxies\ProgressControllerProxy.cs" />
     <Compile Include="Resources\ApplicationSettings.Designer.cs">
       <AutoGen>True</AutoGen>

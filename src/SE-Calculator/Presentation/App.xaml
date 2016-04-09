@@ -7,7 +7,8 @@
              xmlns:dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:sections="clr-namespace:Presentation.ViewModels.Sections"
              xmlns:controls1="clr-namespace:Presentation.Controls"
-             xmlns:system="clr-namespace:System;assembly=mscorlib">
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:model="clr-namespace:Presentation.Model">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -21,7 +22,7 @@
 				<ResourceDictionary>
 					<local:AppBootstrapper x:Key="Bootstrapper"></local:AppBootstrapper>
 
-					<DataTemplate DataType="sections:EnergySource" x:Key="DataTemplateEnergySource">
+					<DataTemplate DataType="model:EnergySource" x:Key="DataTemplateEnergySource">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />

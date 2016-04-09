@@ -5,13 +5,14 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:cal="http://www.caliburnproject.org"
 	xmlns:sections="clr-namespace:Presentation.ViewModels.Sections"
+	xmlns:model="clr-namespace:Presentation.Model"
 	x:Class="Presentation.Views.Sections.ThrusterOverviewView"
 	mc:Ignorable="d"
 	cal:Bind.AtDesignTime="True"
 	d:DataContext="{d:DesignInstance sections:ThrusterOverviewViewModel}"
 	d:DesignHeight="300" d:DesignWidth="939.55">
 	<DockPanel>
-		<DockPanel Width="400" DockPanel.Dock="Right" Background="{StaticResource AccentColorBrush}">
+		<DockPanel Width="400" DockPanel.Dock="Right" Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
 			<DockPanel Margin="10">
 
 				<StackPanel DockPanel.Dock="Bottom">
@@ -40,42 +41,42 @@
 			<DataGrid.Columns>
 				<DataGridTemplateColumn Header="Schiffsgroesse">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=ShipSize}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Thrustergroesse">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=EngineSize}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Kategorie">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=Category}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Masse(kg)">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=Mass}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Energieverbrauch (kw)">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=PowerConsumption}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 				<DataGridTemplateColumn Header="Schubkraft(kn)">
 					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate DataType="sections:Thruster">
+						<DataTemplate DataType="model:Thruster">
 							<TextBlock Text="{Binding Path=Thrust}"></TextBlock>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>

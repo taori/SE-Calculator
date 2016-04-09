@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Presentation.Caliburn;
 using Presentation.Framework;
 using Presentation.Interfaces;
 using Presentation.Model;
@@ -30,41 +28,6 @@ namespace Presentation.ViewModels.Sections
 		protected override string GetPersistanceFileName()
 		{
 			return "energysources.json";
-		}
-	}
-
-	public class EnergySource : PropertyChangedValidationBase
-	{
-		private int _powerOutput;
-		/// <summary>
-		/// kW
-		/// </summary>
-		[DataMember]
-		public int PowerOutput
-		{
-			get { return _powerOutput; }
-			set { SetValue(ref _powerOutput, value, nameof(PowerOutput)); }
-		}
-
-		private string _name;
-		[DataMember]
-		public string Name
-		{
-			get { return _name; }
-			set { SetValue(ref _name, value, nameof(Name)); }
-		}
-
-		private ShipSize _shipSize;
-		[DataMember]
-		public ShipSize ShipSize
-		{
-			get { return _shipSize; }
-			set { SetValue(ref _shipSize, value, nameof(ShipSize)); }
-		}
-
-		public string DisplayName
-		{
-			get { return $"{Name}, {PowerOutput} kW"; }
 		}
 	}
 }

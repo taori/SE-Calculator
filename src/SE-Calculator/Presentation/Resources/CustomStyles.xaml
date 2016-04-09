@@ -12,13 +12,15 @@
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 			<converters:BooleanToVisibilityConverterInverted x:Key="BooleanToVisibilityConverterInverted" />
 			<converters:BooleanConverterInverted x:Key="BooleanConverterInverted" />
+			<converters:ColorTintConverter AlphaPercent="50" x:Key="ColorTintConverterSemiTransparent"></converters:ColorTintConverter>
 
 			<Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-				<Setter Property="controls:TextBoxHelper.UseFloatingWatermark" Value="True"/>
-				<Setter Property="controls:TextBoxHelper.IsWaitingForData" Value="True"/>
+				<Setter Property="controls:TextBoxHelper.UseFloatingWatermark" Value="True" />
+				<Setter Property="controls:TextBoxHelper.IsWaitingForData" Value="True" />
 			</Style>
 
-			<Style x:Key="MetroWindowDefault" TargetType="controls:MetroWindow" BasedOn="{StaticResource {x:Type controls:MetroWindow}}">
+			<Style x:Key="MetroWindowDefault" TargetType="controls:MetroWindow"
+			       BasedOn="{StaticResource {x:Type controls:MetroWindow}}">
 				<Setter Property="TitleCaps" Value="False" />
 				<Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}" />
 				<Setter Property="Background" Value="{DynamicResource WindowBackgroundBrush}" />
@@ -32,10 +34,10 @@
 							<ControlTemplate.Resources>
 								<Storyboard x:Key="DialogShownStoryboard">
 									<DoubleAnimation AccelerationRatio=".9"
-												BeginTime="0:0:0"
-												Duration="0:0:0.2"
-												Storyboard.TargetProperty="Opacity"
-												To="1" />
+									                 BeginTime="0:0:0"
+									                 Duration="0:0:0.2"
+									                 Storyboard.TargetProperty="Opacity"
+									                 To="1" />
 								</Storyboard>
 							</ControlTemplate.Resources>
 							<Grid Background="{TemplateBinding Background}">
@@ -46,7 +48,8 @@
 											<RowDefinition Height="*" />
 											<RowDefinition Height="Auto" />
 										</Grid.RowDefinitions>
-										<ContentPresenter Grid.Row="0" Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogTop, Mode=OneWay}" />
+										<ContentPresenter Grid.Row="0"
+										                  Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogTop, Mode=OneWay}" />
 										<Grid Grid.Row="1">
 											<Grid.ColumnDefinitions>
 												<ColumnDefinition Width="25*" />
@@ -61,27 +64,36 @@
 													<RowDefinition Height="Auto" />
 												</Grid.RowDefinitions>
 												<TextBlock Grid.Row="0"
-															FontSize="{DynamicResource DialogTitleFontSize}"
-															Foreground="{TemplateBinding Foreground}"
-															Text="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Title, Mode=OneWay}"
-															TextWrapping="Wrap" />
+												           FontSize="{DynamicResource DialogTitleFontSize}"
+												           Foreground="{TemplateBinding Foreground}"
+												           Text="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Title, Mode=OneWay}"
+												           TextWrapping="Wrap" />
 												<ContentPresenter Grid.Row="1"
-															Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Content, Mode=OneWay}" />
-												<ItemsControl Grid.Row="2" 
-													HorizontalAlignment="Right"
-													Margin="0,10,0,20"
-													ItemsPanel="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonPanelTemplate, Mode=OneWay}"
-													ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=GeneratedButtons, Mode=OneWay}">
+												                  Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=Content, Mode=OneWay}" />
+												<ItemsControl Grid.Row="2"
+												              HorizontalAlignment="Right"
+												              Margin="0,10,0,20"
+												              ItemsPanel="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonPanelTemplate, Mode=OneWay}"
+												              ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=GeneratedButtons, Mode=OneWay}">
 													<ItemsControl.ItemTemplate>
 														<DataTemplate>
-															<Button Margin="10,0,0,0" Content="{Binding Path=Item2}" Command="{Binding Path=Item1}" Style="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonStyle, Mode=OneWay}"></Button>
+															<Grid Margin="10,0,0,0">
+																<Button Content="{Binding Path=Text}"
+																        Command="{Binding Path=Command}"
+																        Visibility="{Binding Path=IsHighlighted, Converter={StaticResource BooleanToVisibilityConverter}}"
+																        Style="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=HighlightedButtonStyle, Mode=OneWay}" />
+																<Button Content="{Binding Path=Text}"
+																        Command="{Binding Path=Command}"
+																        Visibility="{Binding Path=IsHighlighted, Converter={StaticResource BooleanToVisibilityConverterInverted}}"
+																        Style="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=ButtonStyle, Mode=OneWay}" />
+															</Grid>
 														</DataTemplate>
 													</ItemsControl.ItemTemplate>
 												</ItemsControl>
 											</Grid>
 										</Grid>
 										<ContentPresenter Grid.Row="2"
-													Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogBottom, Mode=OneWay}" />
+										                  Content="{Binding RelativeSource={RelativeSource AncestorType=controls1:MultiButtonDialog, Mode=FindAncestor}, Path=DialogBottom, Mode=OneWay}" />
 									</Grid>
 								</Border>
 							</Grid>
@@ -95,18 +107,26 @@
 						</ControlTemplate>
 					</Setter.Value>
 				</Setter>
+				<Setter Property="HighlightedButtonStyle">
+					<Setter.Value>
+						<Style TargetType="Button" BasedOn="{StaticResource HighlightedSquareButtonStyle}">
+							<Setter Property="Padding" Value="30,10" />
+							<Setter Property="controls:ButtonHelper.PreserveTextCase" Value="True" />
+						</Style>
+					</Setter.Value>
+				</Setter>
 				<Setter Property="ButtonStyle">
 					<Setter.Value>
-						<Style TargetType="Button">
-<!--							<Setter Property="Style" Value="{StaticResource HighlightedSquareButtonStyle}" />-->
-							<Setter Property="Padding" Value="20,7" />
+						<Style TargetType="Button" BasedOn="{StaticResource SquareButtonStyle}">
+							<Setter Property="Padding" Value="30,10" />
+							<Setter Property="controls:ButtonHelper.PreserveTextCase" Value="True" />
 						</Style>
 					</Setter.Value>
 				</Setter>
 				<Setter Property="ButtonPanelTemplate">
 					<Setter.Value>
 						<ItemsPanelTemplate>
-							<StackPanel Orientation="Horizontal"></StackPanel>
+							<StackPanel Orientation="Horizontal" />
 						</ItemsPanelTemplate>
 					</Setter.Value>
 				</Setter>
@@ -116,8 +136,8 @@
 				<Setter Property="VerticalScrollBarVisibility" Value="Auto" />
 			</Style>
 
-			<SolidColorBrush Color="Yellow" x:Key="CustomModifiedBrush"></SolidColorBrush>
-			<SolidColorBrush Color="Green" x:Key="CustomValidBrush"></SolidColorBrush>
+			<SolidColorBrush Color="Yellow" x:Key="CustomModifiedBrush" />
+			<SolidColorBrush Color="Green" x:Key="CustomValidBrush" />
 
 			<system:Double x:Key="FontSizeListHeader">20</system:Double>
 			<system:Double x:Key="FontSizeScrollHeader">20</system:Double>
