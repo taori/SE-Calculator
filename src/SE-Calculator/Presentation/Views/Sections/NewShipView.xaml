@@ -23,19 +23,30 @@
 						<Style TargetType="TextBlock">
 							<Setter Property="Margin" Value="0,5" />
 						</Style>
+						<Style x:Key="TextboxStyleInsufficientPower" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=HasInsufficientPower}" Value="True">
+									<Setter Property="Background" Value="{Binding Source={x:Static Brushes.Red}, Converter={StaticResource ColorTintConverterSemiTransparent}}"></Setter>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
 					</StackPanel.Resources>
 					<TextBlock Text="Geplante Masse(kg):" Margin="0,0,0,5" />
-					<TextBox Text="{Binding Path=DesiredMass}" />
+					<TextBox Text="{Binding Path=DesiredMass, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBlock Text="Gravitation (m/s²)" />
-					<TextBox Text="{Binding Path=Gravity}" />
+					<TextBox Text="{Binding Path=Gravity, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBlock Text="Effizienz" />
-					<TextBox Text="{Binding Path=Efficiency}" />
+					<TextBox Text="{Binding Path=Efficiency, UpdateSourceTrigger=PropertyChanged}" />
 					<TextBlock Text="Energiebedarf" />
-					<TextBox Text="{Binding Path=TotalPowerConsumption, Mode=OneWay}" IsReadOnly="True" />
+					<TextBox Text="{Binding Path=TotalPowerConsumption, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True" />
 					<TextBlock Text="Energieoutput" />
-					<TextBox Text="{Binding Path=AvailableEnergyOutput, Mode=OneWay}" IsReadOnly="True" />
+					<TextBox Text="{Binding Path=AvailableEnergyOutput, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True" Style="{StaticResource TextboxStyleInsufficientPower}"/>
 					<TextBlock Text="Schuboutput" />
-					<TextBox Text="{Binding Path=AvailableThrust, Mode=OneWay}" IsReadOnly="True" />
+					<TextBox Text="{Binding Path=AvailableThrust, Mode=OneWay, StringFormat='{}{0} kN'}" IsReadOnly="True" />
+					<TextBlock Text="Tragfähigkeit" />
+					<TextBox Text="{Binding Path=AvailableLiftForce, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True" />
+					<TextBlock Text="Maximaler Schub mit vorhandener Leistung" />
+					<TextBox Text="{Binding Path=AvailableLiftWithMaxPower, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True" Style="{StaticResource TextboxStyleInsufficientPower}"/>
 				</StackPanel>
 			</ScrollViewer>
 		</Border>
@@ -44,107 +55,111 @@
 				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Triebwerke"
 				           Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neues Triebwerk" cal:Message.Attach="AddThrusterDialog" />
-				<ItemsControl ItemsSource="{Binding Path=Thrusters}" Margin="0,10">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border Margin="0,0,0,10"
-							        Padding="5"
-							        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="Auto" />
-									</Grid.ColumnDefinitions>
-									<StackPanel>
-										<TextBlock Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
-										<TextBlock>
-											<Run Text="Triebwerksgröße:" />
-											<Run Text="{Binding Path=EngineSize}" />
-										</TextBlock>
-										<TextBlock>
-											<Run Text="Masse:" />
-											<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}" />
-										</TextBlock>
-										<TextBlock>
-											<Run Text="Energieverbrauch:" />
-											<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}" />
-										</TextBlock>
-										<TextBlock>
-											<Run Text="Schub:" />
-											<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}" />
-										</TextBlock>
-									</StackPanel>
-									<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-										<Button cal:Message.Attach="Delete($dataContext)" ToolTip="Delete">
-											<Button.Content>
-												<ContentPresenter Content="{StaticResource appbar_delete}">
-													<ContentPresenter.LayoutTransform>
-														<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
-													</ContentPresenter.LayoutTransform>
-												</ContentPresenter>
-											</Button.Content>
-										</Button>
-										<Button Margin="5,0,20,0" cal:Message.Attach="Copy($dataContext)" ToolTip="Copy">
-											<Button.Content>
-												<ContentPresenter Content="{StaticResource appbar_page_copy}">
-													<ContentPresenter.LayoutTransform>
-														<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
-													</ContentPresenter.LayoutTransform>
-												</ContentPresenter>
-											</Button.Content>
-										</Button>
-									</StackPanel>
-								</Grid>
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<ScrollViewer>
+					<ItemsControl ItemsSource="{Binding Path=Thrusters}" Margin="0,10">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border Margin="0,0,0,10"
+								        Padding="5"
+								        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<StackPanel>
+											<TextBlock Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
+											<TextBlock>
+												<Run Text="Triebwerksgröße:" />
+												<Run Text="{Binding Path=EngineSize}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Masse:" />
+												<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Energieverbrauch:" />
+												<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Schub:" />
+												<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}" />
+											</TextBlock>
+										</StackPanel>
+										<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+											<Button cal:Message.Attach="DeleteThruster($dataContext)" ToolTip="Löschen" Content="Löschen">
+<!--												<Button.Content>-->
+<!--													<ContentPresenter Content="{StaticResource appbar_delete}">-->
+<!--														<ContentPresenter.LayoutTransform>-->
+<!--															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />-->
+<!--														</ContentPresenter.LayoutTransform>-->
+<!--													</ContentPresenter>-->
+<!--												</Button.Content>-->
+											</Button>
+											<Button Margin="5,0,20,0" cal:Message.Attach="CopyThruster($dataContext)" ToolTip="Kopieren" Content="Kopieren">
+<!--												<Button.Content>-->
+<!--													<ContentPresenter Content="{StaticResource appbar_page_copy}">-->
+<!--														<ContentPresenter.LayoutTransform>-->
+<!--															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />-->
+<!--														</ContentPresenter.LayoutTransform>-->
+<!--													</ContentPresenter>-->
+<!--												</Button.Content>-->
+											</Button>
+										</StackPanel>
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
 			</DockPanel>
 			<DockPanel Margin="10,10,10,0">
 				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Energiequellen"
 				           Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neue energiequelle" cal:Message.Attach="AddEnergySourceDialog" />
-				<ItemsControl ItemsSource="{Binding Path=EnergySources}"
-				              Margin="0,10">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border Padding="5" Margin="0,0,0,10"
-							        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="Auto" />
-									</Grid.ColumnDefinitions>
-									<StackPanel Grid.Column="1">
-										<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource AccentColorBrush}" />
-										<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
-									</StackPanel>
-									<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-										<Button cal:Message.Attach="Delete($dataContext)" ToolTip="Delete">
-											<Button.Content>
-												<ContentPresenter Content="{StaticResource appbar_delete}">
-													<ContentPresenter.LayoutTransform>
-														<ScaleTransform ScaleX="0.25" ScaleY="0.25" />
-													</ContentPresenter.LayoutTransform>
-												</ContentPresenter>
-											</Button.Content>
-										</Button>
-										<Button Margin="5,0,0,0" cal:Message.Attach="Copy($dataContext)" ToolTip="Copy">
-											<Button.Content>
-												<ContentPresenter Content="{StaticResource appbar_page_copy}">
-													<ContentPresenter.LayoutTransform>
-														<ScaleTransform ScaleX="0.25" ScaleY="0.25" />
-													</ContentPresenter.LayoutTransform>
-												</ContentPresenter>
-											</Button.Content>
-										</Button>
-									</StackPanel>
-								</Grid>
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<ScrollViewer>
+					<ItemsControl ItemsSource="{Binding Path=EnergySources}"
+					              Margin="0,10">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border Padding="5" Margin="0,0,0,10"
+								        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<StackPanel Grid.Column="1">
+											<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource AccentColorBrush}" />
+											<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
+										</StackPanel>
+										<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+											<Button cal:Message.Attach="DeleteEnergySource($dataContext)" ToolTip="Löschen" Content="Löschen">
+<!--												<Button.Content>-->
+<!--													<ContentPresenter Content="{StaticResource appbar_delete}">-->
+<!--														<ContentPresenter.LayoutTransform>-->
+<!--															<ScaleTransform ScaleX="0.25" ScaleY="0.25" />-->
+<!--														</ContentPresenter.LayoutTransform>-->
+<!--													</ContentPresenter>-->
+<!--												</Button.Content>-->
+											</Button>
+											<Button Margin="5,0,0,0" cal:Message.Attach="CopyEnergySource($dataContext)" ToolTip="Kopieren" Content="Kopieren">
+<!--												<Button.Content>-->
+<!--													<ContentPresenter Content="{StaticResource appbar_page_copy}">-->
+<!--														<ContentPresenter.LayoutTransform>-->
+<!--															<ScaleTransform ScaleX="0.25" ScaleY="0.25" />-->
+<!--														</ContentPresenter.LayoutTransform>-->
+<!--													</ContentPresenter>-->
+<!--												</Button.Content>-->
+											</Button>
+										</StackPanel>
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
 			</DockPanel>
 		</UniformGrid>
 	</DockPanel>

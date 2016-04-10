@@ -88,8 +88,24 @@ namespace Presentation.ViewModels.Sections
 		private void RecalculateValues()
 		{
 			AvailableThrust = Thrusters.Sum(s => s.Thrust);
-			TotalPowerConsumption = Thrusters.Sum(s => s.PowerConsumption);
 			AvailableEnergyOutput = EnergySources.Sum(s => s.PowerOutput);
+			TotalPowerConsumption = Thrusters.Sum(s => s.PowerConsumption);
+
+			// http://www.spaceengineerswiki.com/Thruster
+			//  Lift [kg] = engine force [N] * effectivity [unitless] / acceleration due to gravity [m/s²]
+			AvailableLiftForce = (int)((AvailableThrust*1000*Efficiency) / Gravity);
+			var liftPowerFactor = ((float)AvailableEnergyOutput/ (float)TotalPowerConsumption).Clamp(0,1);
+			AvailableLiftWithMaxPower = ((int)(AvailableLiftForce*liftPowerFactor)).Clamp(0, int.MaxValue);
+
+			HasInsufficientPower = AvailableThrust > 0 && AvailableLiftWithMaxPower < AvailableLiftForce;
+		}
+
+		private int _availableLiftWithMaxPower;
+
+		public int AvailableLiftWithMaxPower
+		{
+			get { return _availableLiftWithMaxPower; }
+			set { SetValue(ref _availableLiftWithMaxPower, value, nameof(AvailableLiftWithMaxPower)); }
 		}
 
 		private int _totalPowerConsumption;
@@ -114,6 +130,16 @@ namespace Presentation.ViewModels.Sections
 			set { SetValue(ref _availableThrust, value, nameof(AvailableThrust)); }
 		}
 
+		private int _availableLiftForce;
+		/// <summary>
+		/// kg
+		/// </summary>
+		public int AvailableLiftForce
+		{
+			get { return _availableLiftForce; }
+			set { SetValue(ref _availableLiftForce, value, nameof(AvailableLiftForce)); }
+		}
+
 		private int _availableEnergyOutput;
 
 		/// <summary>
@@ -125,6 +151,14 @@ namespace Presentation.ViewModels.Sections
 			set { SetValue(ref _availableEnergyOutput, value, nameof(AvailableEnergyOutput)); }
 		}
 
+		private bool _hasInsufficientPower;
+
+		public bool HasInsufficientPower
+		{
+			get { return _hasInsufficientPower; }
+			set { SetValue(ref _hasInsufficientPower, value, nameof(HasInsufficientPower)); }
+		}
+
 		public BindableCollection<EnergySource> EnergySources { get; } = new BindableCollection<EnergySource>();
 
 		public BindableCollection<Thruster> Thrusters { get; } = new BindableCollection<Thruster>();
@@ -134,7 +168,11 @@ namespace Presentation.ViewModels.Sections
 		public ShipSize ShipSize
 		{
 			get { return _shipSize; }
-			set { SetValue(ref _shipSize, value, nameof(ShipSize)); }
+			set
+			{
+				SetValue(ref _shipSize, value, nameof(ShipSize));
+				RecalculateValues();
+			}
 		}
 
 		private int _desiredMass;
@@ -145,7 +183,11 @@ namespace Presentation.ViewModels.Sections
 		public int DesiredMass
 		{
 			get { return _desiredMass; }
-			set { SetValue(ref _desiredMass, value, nameof(DesiredMass)); }
+			set
+			{
+				SetValue(ref _desiredMass, value, nameof(DesiredMass));
+				RecalculateValues();
+			}
 		}
 
 		private float _gravity;
@@ -156,7 +198,11 @@ namespace Presentation.ViewModels.Sections
 		public float Gravity
 		{
 			get { return _gravity; }
-			set { SetValue(ref _gravity, value, nameof(Gravity)); }
+			set
+			{
+				SetValue(ref _gravity, value, nameof(Gravity));
+				RecalculateValues();
+			}
 		}
 
 		private float _efficiency;
@@ -164,45 +210,31 @@ namespace Presentation.ViewModels.Sections
 		public float Efficiency
 		{
 			get { return _efficiency; }
-			set { SetValue(ref _efficiency, value, nameof(Efficiency)); }
-		}
-
-		public async void AddThrusterDialog()
-		{
-			var item = new NewThrusterDialogViewModel();
-			var source = new ThrusterOverviewViewModel();
-			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
-			var dialog = await this.CreateDialogAsync(item);
-			dialog.Title = "Neues Triebwerk auswählen:";
-			dialog.AddButton(async () =>
+			set
 			{
-				var cvs = CollectionViewSource.GetDefaultView(item.Items);
-				var current = cvs.CurrentItem as Thruster;
-				Thrusters.Add(current);
-				await dialog.HideAsync();
-			}, "Übernehmen", true);
-
-			await dialog.ShowAsync();
+				SetValue(ref _efficiency, value, nameof(Efficiency));
+				RecalculateValues();
+			}
 		}
 
-		public async void Delete(Thruster item)
+		public async void DeleteThruster(Thruster item)
 		{
-			
+			Thrusters.Remove(item);
 		}
 
-		public async void Copy(Thruster item)
+		public async void CopyThruster(Thruster item)
 		{
-			
+			Thrusters.Add(item.Clone() as Thruster);
 		}
 
-		public async void Delete(EnergySource item)
+		public async void DeleteEnergySource(EnergySource item)
 		{
-			
+			EnergySources.Remove(item);
 		}
 
-		public async void Copy(EnergySource item)
+		public async void CopyEnergySource(EnergySource item)
 		{
-			
+			EnergySources.Add(item.Clone() as EnergySource);
 		}
 
 		public async void AddEnergySourceDialog()
@@ -220,7 +252,25 @@ namespace Presentation.ViewModels.Sections
 				await dialog.HideAsync();
 			}, "Übernehmen", true);
 
-			await dialog.ShowAsync();
+			await dialog.ShowAsync(false);
+		}
+
+		public async void AddThrusterDialog()
+		{
+			var item = new NewThrusterDialogViewModel();
+			var source = new ThrusterOverviewViewModel();
+			item.Items.AddRange((await source.LoadItemsFromFileAsync()).Where(d => d.ShipSize == ShipSize));
+			var dialog = await this.CreateDialogAsync(item);
+			dialog.Title = "Neues Triebwerk auswählen:";
+			dialog.AddButton(async () =>
+			{
+				var cvs = CollectionViewSource.GetDefaultView(item.Items);
+				var current = cvs.CurrentItem as Thruster;
+				Thrusters.Add(current);
+				await dialog.HideAsync();
+			}, "Übernehmen", true);
+
+			await dialog.ShowAsync(false);
 		}
 	}
 }
