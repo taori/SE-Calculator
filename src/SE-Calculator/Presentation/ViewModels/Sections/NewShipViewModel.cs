@@ -185,6 +185,26 @@ namespace Presentation.ViewModels.Sections
 			await dialog.ShowAsync();
 		}
 
+		public async void Delete(Thruster item)
+		{
+			
+		}
+
+		public async void Copy(Thruster item)
+		{
+			
+		}
+
+		public async void Delete(EnergySource item)
+		{
+			
+		}
+
+		public async void Copy(EnergySource item)
+		{
+			
+		}
+
 		public async void AddEnergySourceDialog()
 		{
 			var item = new NewEnergySourceViewModel();

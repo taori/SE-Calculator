@@ -12,7 +12,7 @@
 	mc:Ignorable="d"
 	cal:Bind.AtDesignTime="True"
 	d:DataContext="{d:DesignInstance sections:NewShipViewModel}"
-	d:DesignHeight="300" d:DesignWidth="800">
+	d:DesignHeight="300" d:DesignWidth="1400">
 	<DockPanel>
 		<Border Padding="10"
 		        Background="{Binding Source={StaticResource WindowBackgroundBrush}, Converter={StaticResource ColorTintConverterSemiTransparent}}"
@@ -75,17 +75,24 @@
 										</TextBlock>
 									</StackPanel>
 									<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-										<controls:CanvasButton Canvas="{StaticResource appbar_delete}"/>
-										<ContentPresenter Content="{StaticResource appbar_delete}">
-											<ContentPresenter.LayoutTransform>
-												<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
-											</ContentPresenter.LayoutTransform>
-										</ContentPresenter>
-										<ContentPresenter Content="{StaticResource appbar_page_copy}">
-											<ContentPresenter.LayoutTransform>
-												<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
-											</ContentPresenter.LayoutTransform>
-										</ContentPresenter>
+										<Button cal:Message.Attach="Delete($dataContext)" ToolTip="Delete">
+											<Button.Content>
+												<ContentPresenter Content="{StaticResource appbar_delete}">
+													<ContentPresenter.LayoutTransform>
+														<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+													</ContentPresenter.LayoutTransform>
+												</ContentPresenter>
+											</Button.Content>
+										</Button>
+										<Button Margin="5,0,20,0" cal:Message.Attach="Copy($dataContext)" ToolTip="Copy">
+											<Button.Content>
+												<ContentPresenter Content="{StaticResource appbar_page_copy}">
+													<ContentPresenter.LayoutTransform>
+														<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+													</ContentPresenter.LayoutTransform>
+												</ContentPresenter>
+											</Button.Content>
+										</Button>
 									</StackPanel>
 								</Grid>
 							</Border>
@@ -107,10 +114,31 @@
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto" />
 										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
 									</Grid.ColumnDefinitions>
 									<StackPanel Grid.Column="1">
 										<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource AccentColorBrush}" />
 										<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
+									</StackPanel>
+									<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+										<Button cal:Message.Attach="Delete($dataContext)" ToolTip="Delete">
+											<Button.Content>
+												<ContentPresenter Content="{StaticResource appbar_delete}">
+													<ContentPresenter.LayoutTransform>
+														<ScaleTransform ScaleX="0.25" ScaleY="0.25" />
+													</ContentPresenter.LayoutTransform>
+												</ContentPresenter>
+											</Button.Content>
+										</Button>
+										<Button Margin="5,0,0,0" cal:Message.Attach="Copy($dataContext)" ToolTip="Copy">
+											<Button.Content>
+												<ContentPresenter Content="{StaticResource appbar_page_copy}">
+													<ContentPresenter.LayoutTransform>
+														<ScaleTransform ScaleX="0.25" ScaleY="0.25" />
+													</ContentPresenter.LayoutTransform>
+												</ContentPresenter>
+											</Button.Content>
+										</Button>
 									</StackPanel>
 								</Grid>
 							</Border>
