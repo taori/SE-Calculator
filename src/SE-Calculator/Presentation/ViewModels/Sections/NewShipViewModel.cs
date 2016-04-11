@@ -38,6 +38,12 @@ namespace Presentation.ViewModels.Sections
 
 			EnergySources.CollectionChanged += EnergySourcesChanged;
 			Thrusters.CollectionChanged += ThrustersChanged;
+
+			var view = CollectionViewSource.GetDefaultView(EnergySources);
+			view.SortDescriptions.Add(new SortDescription(nameof(EnergySource.DisplayName), ListSortDirection.Ascending));
+
+			view = CollectionViewSource.GetDefaultView(Thrusters);
+			view.SortDescriptions.Add(new SortDescription(nameof(Thruster.DisplayName), ListSortDirection.Ascending));
 		}
 
 		private void ThrustersChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -98,6 +104,9 @@ namespace Presentation.ViewModels.Sections
 			AvailableLiftWithMaxPower = ((int)(AvailableLiftForce*liftPowerFactor)).Clamp(0, int.MaxValue);
 
 			HasInsufficientPower = AvailableThrust > 0 && AvailableLiftWithMaxPower < AvailableLiftForce;
+			
+			EnergySourcesSummary = string.Join(Environment.NewLine, EnergySources.GroupBy(d => d.DisplayName).Select(group => group.Key + " " + group.Count()));
+			ThrustersSummary = string.Join(Environment.NewLine, Thrusters.GroupBy(d => d.DisplayName).Select(group => group.Key + " " + group.Count()));
 		}
 
 		private int _availableLiftWithMaxPower;
@@ -106,6 +115,22 @@ namespace Presentation.ViewModels.Sections
 		{
 			get { return _availableLiftWithMaxPower; }
 			set { SetValue(ref _availableLiftWithMaxPower, value, nameof(AvailableLiftWithMaxPower)); }
+		}
+
+		private string _thrustersSummary;
+
+		public string ThrustersSummary
+		{
+			get { return _thrustersSummary; }
+			set { SetValue(ref _thrustersSummary, value, nameof(ThrustersSummary)); }
+		}
+
+		private string _energySourcesSummary;
+
+		public string EnergySourcesSummary
+		{
+			get { return _energySourcesSummary; }
+			set { SetValue(ref _energySourcesSummary, value, nameof(EnergySourcesSummary)); }
 		}
 
 		private int _totalPowerConsumption;

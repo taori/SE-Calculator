@@ -26,7 +26,8 @@
 						<Style x:Key="TextboxStyleInsufficientPower" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
 							<Style.Triggers>
 								<DataTrigger Binding="{Binding Path=HasInsufficientPower}" Value="True">
-									<Setter Property="Background" Value="{Binding Source={x:Static Brushes.Red}, Converter={StaticResource ColorTintConverterSemiTransparent}}"></Setter>
+									<Setter Property="Background"
+									        Value="{Binding Source={x:Static Brushes.Red}, Converter={StaticResource ColorTintConverterSemiTransparent}}" />
 								</DataTrigger>
 							</Style.Triggers>
 						</Style>
@@ -40,19 +41,23 @@
 					<TextBlock Text="Energiebedarf" />
 					<TextBox Text="{Binding Path=TotalPowerConsumption, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True" />
 					<TextBlock Text="Energieoutput" />
-					<TextBox Text="{Binding Path=AvailableEnergyOutput, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True" Style="{StaticResource TextboxStyleInsufficientPower}"/>
+					<TextBox Text="{Binding Path=AvailableEnergyOutput, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True"
+					         Style="{StaticResource TextboxStyleInsufficientPower}" />
 					<TextBlock Text="Schuboutput" />
 					<TextBox Text="{Binding Path=AvailableThrust, Mode=OneWay, StringFormat='{}{0} kN'}" IsReadOnly="True" />
 					<TextBlock Text="Tragfähigkeit" />
 					<TextBox Text="{Binding Path=AvailableLiftForce, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True" />
 					<TextBlock Text="Maximaler Schub mit vorhandener Leistung" />
-					<TextBox Text="{Binding Path=AvailableLiftWithMaxPower, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True" Style="{StaticResource TextboxStyleInsufficientPower}"/>
+					<TextBox Text="{Binding Path=AvailableLiftWithMaxPower, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True"
+					         Style="{StaticResource TextboxStyleInsufficientPower}" />
 				</StackPanel>
 			</ScrollViewer>
 		</Border>
 		<UniformGrid Rows="1" Columns="2">
 			<DockPanel Margin="10,10,10,0">
 				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Triebwerke"
+				           Foreground="{StaticResource AccentColorBrush}" />
+				<TextBlock DockPanel.Dock="Top" Margin="0,5" FontSize="16" Text="{Binding Path=ThrustersSummary}"
 				           Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neues Triebwerk" cal:Message.Attach="AddThrusterDialog" />
 				<ScrollViewer>
@@ -68,7 +73,7 @@
 											<ColumnDefinition Width="Auto" />
 										</Grid.ColumnDefinitions>
 										<StackPanel>
-											<TextBlock Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
+											<TextBlock Margin="0,0,0,5" Text="{Binding Path=Category}" Foreground="{StaticResource AccentColorBrush}" FontWeight="Bold" />
 											<TextBlock>
 												<Run Text="Triebwerksgröße:" />
 												<Run Text="{Binding Path=EngineSize}" />
@@ -87,23 +92,23 @@
 											</TextBlock>
 										</StackPanel>
 										<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-											<Button cal:Message.Attach="DeleteThruster($dataContext)" ToolTip="Löschen" Content="Löschen">
-<!--												<Button.Content>-->
-<!--													<ContentPresenter Content="{StaticResource appbar_delete}">-->
-<!--														<ContentPresenter.LayoutTransform>-->
-<!--															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />-->
-<!--														</ContentPresenter.LayoutTransform>-->
-<!--													</ContentPresenter>-->
-<!--												</Button.Content>-->
+											<Button cal:Message.Attach="DeleteThruster($dataContext)" ToolTip="Löschen">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_delete}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
 											</Button>
-											<Button Margin="5,0,20,0" cal:Message.Attach="CopyThruster($dataContext)" ToolTip="Kopieren" Content="Kopieren">
-<!--												<Button.Content>-->
-<!--													<ContentPresenter Content="{StaticResource appbar_page_copy}">-->
-<!--														<ContentPresenter.LayoutTransform>-->
-<!--															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />-->
-<!--														</ContentPresenter.LayoutTransform>-->
-<!--													</ContentPresenter>-->
-<!--												</Button.Content>-->
+											<Button Margin="5,0,20,0" cal:Message.Attach="CopyThruster($dataContext)" ToolTip="Kopieren">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_page_copy}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
 											</Button>
 										</StackPanel>
 									</Grid>
@@ -115,9 +120,12 @@
 			</DockPanel>
 			<DockPanel Margin="10,10,10,0">
 				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Energiequellen"
+				           Foreground="{StaticResource AccentColorBrush}" />
+				<TextBlock DockPanel.Dock="Top" Margin="0,5" FontSize="16" Text="{Binding Path=EnergySourcesSummary}"
 				           Foreground="{StaticResource MetroDataGrid.HighlightTextBrush}" />
 				<Button DockPanel.Dock="Bottom" Content="Neue energiequelle" cal:Message.Attach="AddEnergySourceDialog" />
-				<ScrollViewer>
+
+				<ScrollViewer x:Name="scroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 					<ItemsControl ItemsSource="{Binding Path=EnergySources}"
 					              Margin="0,10">
 						<ItemsControl.ItemTemplate>
@@ -131,27 +139,27 @@
 											<ColumnDefinition Width="Auto" />
 										</Grid.ColumnDefinitions>
 										<StackPanel Grid.Column="1">
-											<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource AccentColorBrush}" />
+											<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource AccentColorBrush}" Margin="0,0,0,5"/>
 											<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
 										</StackPanel>
 										<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-											<Button cal:Message.Attach="DeleteEnergySource($dataContext)" ToolTip="Löschen" Content="Löschen">
-<!--												<Button.Content>-->
-<!--													<ContentPresenter Content="{StaticResource appbar_delete}">-->
-<!--														<ContentPresenter.LayoutTransform>-->
-<!--															<ScaleTransform ScaleX="0.25" ScaleY="0.25" />-->
-<!--														</ContentPresenter.LayoutTransform>-->
-<!--													</ContentPresenter>-->
-<!--												</Button.Content>-->
+											<Button cal:Message.Attach="DeleteEnergySource($dataContext)" ToolTip="Löschen">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_delete}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
 											</Button>
-											<Button Margin="5,0,0,0" cal:Message.Attach="CopyEnergySource($dataContext)" ToolTip="Kopieren" Content="Kopieren">
-<!--												<Button.Content>-->
-<!--													<ContentPresenter Content="{StaticResource appbar_page_copy}">-->
-<!--														<ContentPresenter.LayoutTransform>-->
-<!--															<ScaleTransform ScaleX="0.25" ScaleY="0.25" />-->
-<!--														</ContentPresenter.LayoutTransform>-->
-<!--													</ContentPresenter>-->
-<!--												</Button.Content>-->
+											<Button Margin="5,0,0,0" cal:Message.Attach="CopyEnergySource($dataContext)" ToolTip="Kopieren">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_page_copy}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
 											</Button>
 										</StackPanel>
 									</Grid>
