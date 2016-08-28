@@ -13,7 +13,8 @@ namespace Presentation.ViewModels.Windows
 	{
 		ReactorOverview,
 		ThrusterOverview,
-		NewShip
+		NewSmallShip,
+		NewLargeShip
 	}
 
 	public class ShellViewModel : Conductor<IMainTabsControl>.Collection.OneActive, IShell
@@ -34,7 +35,7 @@ namespace Presentation.ViewModels.Windows
 
 			OpenTab(TabOptions.ThrusterOverview);
 			OpenTab(TabOptions.ReactorOverview);
-			OpenTab(TabOptions.NewShip);
+			OpenTab(TabOptions.NewSmallShip);
 		}
 
 		public override string DisplayName
@@ -53,19 +54,22 @@ namespace Presentation.ViewModels.Windows
 				case TabOptions.ThrusterOverview:
 					OpenThrusterTab();
 					break;
-				case TabOptions.NewShip:
-					OpenNewShipTab();
+				case TabOptions.NewSmallShip:
+					OpenNewShipTab(ShipSize.Small);
+					break;
+				case TabOptions.NewLargeShip:
+					OpenNewShipTab(ShipSize.Large);
 					break;
 				default:
 					return;
 			}
 		}
 
-		private void OpenNewShipTab()
+		private void OpenNewShipTab(ShipSize size)
 		{
 			IMainTabsControl newTab;
-			newTab = new NewShipViewModel(ShipSize.Small);
-			newTab.DisplayName = "Neues Schiff";
+			newTab = new NewShipViewModel(size);
+			newTab.DisplayName = $"Neues Schiff ({size})";
 			this.Items.Add(newTab);
 			ActivateItem(newTab);
 		}

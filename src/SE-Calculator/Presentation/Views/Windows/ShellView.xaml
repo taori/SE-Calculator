@@ -18,7 +18,8 @@
 		<DockPanel>
 			<Menu DockPanel.Dock="Top">
 				<MenuItem Header="Ansicht">
-					<MenuItem Header="Neues Schriff" cal:Message.Attach="OpenTab('NewShip')"></MenuItem>
+					<MenuItem Header="Neues Schriff (klein)" cal:Message.Attach="OpenTab('NewSmallShip')"></MenuItem>
+					<MenuItem Header="Neues Schriff (gross)" cal:Message.Attach="OpenTab('NewLargeShip')"></MenuItem>
 					<MenuItem Header="Triebwerksuebersicht" cal:Message.Attach="OpenTab('ThrusterOverview')"></MenuItem>
 					<MenuItem Header="Energiequellen" cal:Message.Attach="OpenTab('ReactorOverview')"></MenuItem>
 				</MenuItem>
