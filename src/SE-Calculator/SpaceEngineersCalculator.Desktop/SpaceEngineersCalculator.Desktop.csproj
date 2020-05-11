@@ -1,0 +1,118 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Entypo-license.txt" />
+    <None Remove="Resources\Entypo.ttf" />
+    <None Remove="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="3.2.0" />
+    <PackageReference Include="Caliburn.Micro.Start" Version="3.2.0" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0775" />
+    <PackageReference Include="Microsoft.Composition" Version="1.0.31" />
+    <PackageReference Include="Newtonsoft.Json" Version="7.0.1" />
+    <PackageReference Include="PrettyBin" Version="1.1.0" />
+    <PackageReference Include="WeakEvent" Version="3.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\Entypo.ttf" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\ApplicationSettings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>ApplicationSettings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\ApplicationTranslations.Designer.cs">
+      <DependentUpon>ApplicationTranslations.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Resources\WindowResources.Designer.cs">
+      <DependentUpon>WindowResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Views\Dialogs\NewEnergySourceView.xaml.cs">
+      <DependentUpon>NewEnergySourceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Dialogs\NewThrusterDialogView.xaml.cs">
+      <DependentUpon>NewThrusterDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sections\EnergySourceOverviewView.xaml.cs">
+      <DependentUpon>EnergySourceOverviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sections\NewShipView.xaml.cs">
+      <DependentUpon>NewShipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Sections\ThrusterOverviewView.xaml.cs">
+      <DependentUpon>ThrusterOverviewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Windows\ShellView.xaml.cs">
+      <DependentUpon>ShellView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ApplicationTranslations.resx">
+      <LastGenOutput>ApplicationTranslations.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\WindowResources.resx">
+      <LastGenOutput>WindowResources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\ApplicationSettings.settings">
+      <LastGenOutput>ApplicationSettings.Designer.cs</LastGenOutput>
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\CustomStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Dialogs\NewEnergySourceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Dialogs\NewThrusterDialogView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Sections\EnergySourceOverviewView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Sections\NewShipView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Sections\ThrusterOverviewView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Windows\ShellView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>

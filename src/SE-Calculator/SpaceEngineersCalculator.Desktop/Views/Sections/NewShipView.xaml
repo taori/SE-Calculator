@@ -1,0 +1,172 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:cal="http://www.caliburnproject.org"
+	xmlns:fa="http://schemas.fontawesome.io/icons/"
+	xmlns:sections="clr-namespace:SpaceEngineersCalculator.Desktop.ViewModels.Sections"
+	x:Class="SpaceEngineersCalculator.Desktop.Views.Sections.NewShipView"
+	mc:Ignorable="d"
+	cal:Bind.AtDesignTime="True"
+	d:DataContext="{d:DesignInstance sections:NewShipViewModel}"
+	d:DesignHeight="300" d:DesignWidth="1400">
+	<DockPanel>
+		<Border Padding="10"
+		        Background="{Binding Source={StaticResource MahApps.Brushes.Window.Background}, Converter={StaticResource ColorTintConverterSemiTransparent}}"
+		        DockPanel.Dock="Left" Width="300">
+			<ScrollViewer>
+				<StackPanel>
+					<StackPanel.Resources>
+						<Style TargetType="TextBlock">
+							<Setter Property="Margin" Value="0,5" />
+						</Style>
+						<Style x:Key="TextboxStyleInsufficientPower" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding Path=HasInsufficientPower}" Value="True">
+									<Setter Property="Background"
+									        Value="{Binding Source={x:Static Brushes.Red}, Converter={StaticResource ColorTintConverterSemiTransparent}}" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</StackPanel.Resources>
+					<TextBlock Text="Geplante Masse(kg):" Margin="0,0,0,5" />
+					<TextBox Text="{Binding Path=DesiredMass, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Text="Gravitation (m/s²)" />
+					<TextBox Text="{Binding Path=Gravity, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Text="Effizienz" />
+					<TextBox Text="{Binding Path=Efficiency, UpdateSourceTrigger=PropertyChanged}" />
+					<TextBlock Text="Energiebedarf" />
+					<TextBox Text="{Binding Path=TotalPowerConsumption, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True" />
+					<TextBlock Text="Energieoutput" />
+					<TextBox Text="{Binding Path=AvailableEnergyOutput, Mode=OneWay, StringFormat='{}{0} kW'}" IsReadOnly="True"
+					         Style="{StaticResource TextboxStyleInsufficientPower}" />
+					<TextBlock Text="Schuboutput" />
+					<TextBox Text="{Binding Path=AvailableThrust, Mode=OneWay, StringFormat='{}{0} kN'}" IsReadOnly="True" />
+					<TextBlock Text="Tragfähigkeit" />
+					<TextBox Text="{Binding Path=AvailableLiftForce, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True" />
+					<TextBlock Text="Maximaler Schub mit vorhandener Leistung" />
+					<TextBox Text="{Binding Path=AvailableLiftWithMaxPower, Mode=OneWay, StringFormat='{}{0} kg'}" IsReadOnly="True"
+					         Style="{StaticResource TextboxStyleInsufficientPower}" />
+				</StackPanel>
+			</ScrollViewer>
+		</Border>
+		<UniformGrid Rows="1" Columns="2">
+			<DockPanel Margin="10,10,10,0">
+				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Triebwerke"
+				           Foreground="{StaticResource MahApps.Brushes.Accent}" />
+				<TextBlock DockPanel.Dock="Top" Margin="0,5" FontSize="16" Text="{Binding Path=ThrustersSummary}"
+				           Foreground="{StaticResource MahApps.Brushes.Highlight}" />
+				<Button DockPanel.Dock="Bottom" Content="Neues Triebwerk" cal:Message.Attach="AddThrusterDialog" />
+				<ScrollViewer>
+					<ItemsControl ItemsSource="{Binding Path=Thrusters}" Margin="0,10">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border Margin="0,0,0,10"
+								        Padding="5"
+								        Background="{Binding Source={StaticResource MahApps.Brushes.Window.Background}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<StackPanel>
+											<TextBlock Margin="0,0,0,5" Text="{Binding Path=Category}" Foreground="{StaticResource MahApps.Brushes.Accent}" FontWeight="Bold" />
+											<TextBlock>
+												<Run Text="Triebwerksgröße:" />
+												<Run Text="{Binding Path=EngineSize}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Masse:" />
+												<Run Text="{Binding Path=Mass, StringFormat='{}{0} kg'}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Energieverbrauch:" />
+												<Run Text="{Binding Path=PowerConsumption, StringFormat='{}{0} kW'}" />
+											</TextBlock>
+											<TextBlock>
+												<Run Text="Schub:" />
+												<Run Text="{Binding Path=Thrust, StringFormat='{}{0} kN'}" />
+											</TextBlock>
+										</StackPanel>
+										<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+											<Button cal:Message.Attach="DeleteThruster($dataContext)" ToolTip="Löschen">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_delete}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
+											</Button>
+											<Button Margin="5,0,20,0" cal:Message.Attach="CopyThruster($dataContext)" ToolTip="Kopieren">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_page_copy}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
+											</Button>
+										</StackPanel>
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</DockPanel>
+			<DockPanel Margin="10,10,10,0">
+				<TextBlock DockPanel.Dock="Top" FontSize="20" Text="Energiequellen"
+				           Foreground="{StaticResource MahApps.Brushes.Accent}" />
+				<TextBlock DockPanel.Dock="Top" Margin="0,5" FontSize="16" Text="{Binding Path=EnergySourcesSummary}"
+				           Foreground="{StaticResource MahApps.Brushes.Highlight}" />
+				<Button DockPanel.Dock="Bottom" Content="Neue energiequelle" cal:Message.Attach="AddEnergySourceDialog" />
+
+				<ScrollViewer x:Name="scroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+					<ItemsControl ItemsSource="{Binding Path=EnergySources}"
+					              Margin="0,10">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border Padding="5" Margin="0,0,0,10"
+								        Background="{Binding Source={StaticResource MahApps.Brushes.Window.Background}, Converter={StaticResource ColorTintConverterSemiTransparent}}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<StackPanel Grid.Column="1">
+											<TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="{StaticResource MahApps.Brushes.Accent}" Margin="0,0,0,5"/>
+											<TextBlock Text="{Binding Path=PowerOutput, StringFormat='{}{0} kW'}" />
+										</StackPanel>
+										<StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+											<Button cal:Message.Attach="DeleteEnergySource($dataContext)" ToolTip="Löschen">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_delete}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
+											</Button>
+											<Button Margin="5,0,0,0" cal:Message.Attach="CopyEnergySource($dataContext)" ToolTip="Kopieren">
+												<Button.Content>
+													<ContentPresenter Content="{StaticResource appbar_page_copy}">
+														<ContentPresenter.LayoutTransform>
+															<ScaleTransform ScaleX="0.5" ScaleY="0.5" />
+														</ContentPresenter.LayoutTransform>
+													</ContentPresenter>
+												</Button.Content>
+											</Button>
+										</StackPanel>
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</DockPanel>
+		</UniformGrid>
+	</DockPanel>
+</UserControl>
