@@ -99,9 +99,9 @@ namespace Presentation.ViewModels.Sections
 
 			// http://www.spaceengineerswiki.com/Thruster
 			//  Lift [kg] = engine force [N] * effectivity [unitless] / acceleration due to gravity [m/s²]
-			AvailableLiftForce = (int)((AvailableThrust*1000*Efficiency) / Gravity);
-			var liftPowerFactor = ((float)AvailableEnergyOutput/ (float)TotalPowerConsumption).Clamp(0,1);
-			AvailableLiftWithMaxPower = ((int)(AvailableLiftForce*liftPowerFactor)).Clamp(0, int.MaxValue);
+			AvailableLiftForce = (int) ((AvailableThrust * 1000 * Efficiency) / Gravity);
+			var liftPowerFactor = ((float) AvailableEnergyOutput / (float) TotalPowerConsumption).Clamp(0, 1);
+			AvailableLiftWithMaxPower = ((int) (AvailableLiftForce * liftPowerFactor)).Clamp(0, int.MaxValue);
 
 			HasInsufficientPower = AvailableThrust > 0 && AvailableLiftWithMaxPower < AvailableLiftForce;
 			
@@ -242,22 +242,22 @@ namespace Presentation.ViewModels.Sections
 			}
 		}
 
-		public async void DeleteThruster(Thruster item)
+		public void DeleteThruster(Thruster item)
 		{
 			Thrusters.Remove(item);
 		}
 
-		public async void CopyThruster(Thruster item)
+		public void CopyThruster(Thruster item)
 		{
 			Thrusters.Add(item.Clone() as Thruster);
 		}
 
-		public async void DeleteEnergySource(EnergySource item)
+		public void DeleteEnergySource(EnergySource item)
 		{
 			EnergySources.Remove(item);
 		}
 
-		public async void CopyEnergySource(EnergySource item)
+		public void CopyEnergySource(EnergySource item)
 		{
 			EnergySources.Add(item.Clone() as EnergySource);
 		}

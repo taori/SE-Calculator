@@ -33,6 +33,14 @@ namespace Presentation.Model
 			set { SetValue(ref _shipSize, value, nameof(ShipSize)); }
 		}
 
+		private int _mass;
+		[DataMember]
+		public int Mass
+		{
+			get => _mass;
+			set => SetValue(ref _mass, value, nameof(Mass));
+		}
+
 		public string DisplayName
 		{
 			get { return $"{Name}, {PowerOutput} kW"; }

@@ -18,38 +18,44 @@ namespace Presentation.Model
 			{
 				Name = "Großer Reaktor",
 				ShipSize = ShipSize.Large,
-				PowerOutput = 300000
+				PowerOutput = 300000,
+				Mass = 73795
 			});
 			result.Add(new EnergySource()
 			{
 				Name = "Großer Reaktor",
 				ShipSize = ShipSize.Small,
-				PowerOutput = 147500
+				PowerOutput = 14750,
+				Mass = 3901
 			});
 			result.Add(new EnergySource()
 			{
 				Name = "Kleiner Reaktor",
 				ShipSize = ShipSize.Large,
-				PowerOutput = 15000
+				PowerOutput = 15000,
+				Mass = 4793
 			});
 			result.Add(new EnergySource()
 			{
 				Name = "Kleiner Reaktor",
 				ShipSize = ShipSize.Small,
-				PowerOutput = 500
+				PowerOutput = 500,
+				Mass = 278
 			});
 
 			result.Add(new EnergySource()
 			{
 				Name = "Batterie",
-				ShipSize = ShipSize.Small,
-				PowerOutput = 4320
+				ShipSize = ShipSize.Large,
+				PowerOutput = 12000,
+				Mass = 3845
 			});
 			result.Add(new EnergySource()
 			{
 				Name = "Batterie",
-				ShipSize = ShipSize.Large,
-				PowerOutput = 12000
+				ShipSize = ShipSize.Small,
+				PowerOutput = 4000,
+				Mass = 1040
 			});
 
 			return result;
@@ -66,7 +72,7 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Ionic,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Large,
-				Thrust = 3600,
+				Thrust = 4320,
 				Mass = 43200,
 				PowerConsumption = 33600,
 			});
@@ -75,7 +81,7 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Ionic,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Large,
-				Thrust = 144,
+				Thrust = 172,
 				Mass = 721,
 				PowerConsumption = 2400,
 			});
@@ -84,8 +90,8 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Ionic,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Small,
-				Thrust = 288,
-				Mass = 4384,
+				Thrust = 345,
+				Mass = 4380,
 				PowerConsumption = 3360,
 			});
 			result.Add(new Thruster()
@@ -93,9 +99,9 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Ionic,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Small,
-				Thrust = 12,
-				Mass = 93,
-				PowerConsumption = 201,
+				Thrust = 14,
+				Mass = 121,
+				PowerConsumption = 200,
 			});
 			
 			result.Add(new Thruster()
@@ -103,36 +109,36 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Hydrogen,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Large,
-				Thrust = 6000,
+				Thrust = 7200,
 				Mass = 6940,
-				PowerConsumption = 10000,
+				PowerConsumption = 7500,
 			});
 			result.Add(new Thruster()
 			{
 				Category = ThrusterCategory.Hydrogen,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Large,
-				Thrust = 400,
+				Thrust = 480,
 				Mass = 1222,
-				PowerConsumption = 800,
+				PowerConsumption = 600,
 			});
 			result.Add(new Thruster()
 			{
 				Category = ThrusterCategory.Hydrogen,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Small,
-				Thrust = 900,
+				Thrust = 1080,
 				Mass = 1420,
-				PowerConsumption = 1700,
+				PowerConsumption = 1250,
 			});
 			result.Add(new Thruster()
 			{
 				Category = ThrusterCategory.Hydrogen,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Small,
-				Thrust = 82,
+				Thrust = 98,
 				Mass = 334,
-				PowerConsumption = 170,
+				PowerConsumption = 125,
 			});
 			
 			result.Add(new Thruster()
@@ -140,17 +146,17 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Atmospheric,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Large,
-				Thrust = 5400,
-				Mass = 33834,
-				PowerConsumption = 16360,
+				Thrust = 6480,
+				Mass = 32970,
+				PowerConsumption = 16800,
 			});
 			result.Add(new Thruster()
 			{
 				Category = ThrusterCategory.Atmospheric,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Large,
-				Thrust = 408,
-				Mass = 4244,
+				Thrust = 576,
+				Mass = 2948,
 				PowerConsumption = 2400,
 			});
 			result.Add(new Thruster()
@@ -158,18 +164,18 @@ namespace Presentation.Model
 				Category = ThrusterCategory.Atmospheric,
 				ShipSize = ShipSize.Large,
 				EngineSize = EngineSize.Small,
-				Thrust = 420,
-				Mass = 4072,
-				PowerConsumption = 2360,
+				Thrust = 648,
+				Mass = 4000,
+				PowerConsumption = 2400,
 			});
 			result.Add(new Thruster()
 			{
 				Category = ThrusterCategory.Atmospheric,
 				ShipSize = ShipSize.Small,
 				EngineSize = EngineSize.Small,
-				Thrust = 80,
-				Mass = 539,
-				PowerConsumption = 701,
+				Thrust = 96,
+				Mass = 699,
+				PowerConsumption = 600,
 			});
 
 
